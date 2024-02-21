@@ -3,6 +3,7 @@
 ### Step 1 Run Experiments 
 
 ```
+pip install bitsandbytes
 cd circuitQA
 git pull
 conda activate <circuitQAenvironment>
