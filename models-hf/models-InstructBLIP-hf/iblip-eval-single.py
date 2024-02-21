@@ -29,7 +29,7 @@ if __name__ == "__main__":
 
 
     #model = InstructBlipForConditionalGeneration.from_pretrained("Salesforce/instructblip-vicuna-7b")
-    model = InstructBlipForConditionalGeneration.from_pretrained("Salesforce/instructblip-vicuna-7b",load_in_4bit=True, torch_dtype=torch.float16)
+    model = InstructBlipForConditionalGeneration.from_pretrained("Salesforce/instructblip-vicuna-7b") #,load_in_4bit=True, torch_dtype=torch.float16)
 
     processor = InstructBlipProcessor.from_pretrained("Salesforce/instructblip-vicuna-7b")
 
