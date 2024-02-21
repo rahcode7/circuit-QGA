@@ -1,4 +1,4 @@
-## InstructBLIP
+## InstructBLIP - ZERO SHOT
 
 ### Step 1 Run Experiments 
 
