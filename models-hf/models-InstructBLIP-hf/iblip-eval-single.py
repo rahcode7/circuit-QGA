@@ -118,7 +118,7 @@ if __name__ == "__main__":
                 else:
                     prompt += q.split("?")[0] + " ? "
                 
-                inputs = processor(images=image, text=prompt, return_tensors="pt").to(device)
+                inputs = processor(images=image, text=prompt, return_tensors="pt").to(device,dtype=torch.bfloat16)
 
                 outputs = model.generate(
                     **inputs,
