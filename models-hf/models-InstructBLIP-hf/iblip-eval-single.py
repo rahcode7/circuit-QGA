@@ -33,7 +33,7 @@ if __name__ == "__main__":
     processor = InstructBlipProcessor.from_pretrained("Salesforce/instructblip-vicuna-7b")
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    model.to(device)
+    #model.to(device)
         
     df = pd.read_json(QUESTIONS_PATH)
     ic(df.head(5))
