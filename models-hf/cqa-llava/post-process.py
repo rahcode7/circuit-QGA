@@ -18,24 +18,24 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     
     parser.add_argument('--prediction_dir', help='directory')
+    parser.add_argument('--exp_name', help='directory')
     
     args = parser.parse_args()
 
     RESULTS_DIR = args.prediction_dir
-    
+    EXP_NAME = args.exp_name 
+
     input_file = os.path.join(RESULTS_DIR,'predictions.json')
     df = pd.read_json(input_file, lines=True)
     print(df.head(4))
 
-    # For desc append for qtypes from base dataset
-    df_base = pd.read_json('/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-LLaVa-hf/results-ddp/384a/base/predictions.json',lines=True)
-    df_base = df_base[df_base.qtype.isin(['position','junction','value'])]
-    df  = pd.concat([df_base,df],axis=0)
-    ic(df.shape[0])
-    ic(df.head(2))
-    ic(df.info())
-    ic(df.qtype.value_counts)
-
+    # If desc, merge with base predictions 
+    if EXP_NAME == 'desc':
+        df2 = pd.read_json('/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-LLaVa-hf/results-ddp/384a/base/predictions.json', lines=True)
+        df2 = df2[df2.qtype.isin(['position','value','junction'])]
+        ic(df2['qtype'].value_counts())
+        df = pd.concat([df,df2],ignore_index=True)
+    ic(df.shape)
 
     p = inflect.engine()
 
@@ -46,20 +46,14 @@ if __name__ == "__main__":
     # For each row check question type 
     # extract any number or the answer 
 
-
-    df['pred_final'] = df['answer'].astype('object')
-    df['pred_new'] = df['answer'].astype('object')
-
-
     for j,row in tqdm(df.iterrows(),total=df.shape[0]):
 
         answer,pred,qtype = row['answer'],row['prediction'],row['qtype']
-        #ic(pred)
         pred = re.sub(r'\W+', ' ',pred)
 
         if pred[-1] == ".":
             pred = pred[:-1]
-
+        #ic(pred)
         sl = pred.lower().split(" ")
         #ic(sl)
         
@@ -70,25 +64,31 @@ if __name__ == "__main__":
             # Yes, the image shows a circuit diagram with a total of 14 diode light emittings.
             # The image shows a circuit diagram with a number of resistors, but without knowing the specific details of the diagram, it is not possible to provide an accurate count of the resistors.
             # There are two components in the circuit that function as current-sources.
-            if pred.isdigit():
-                    pred_final = pred
-                    pred_new = pred
-            else:        
-                for num in nums:
-                    if " " + str(num) + " " in pred:
-                        pred_final = num 
+            
+            for num in nums:
+                if " " + str(num) + " " in pred:
+                    pred_final = num 
 
-                # Check "forty five" in the string
-                for i ,word in enumerate(nums_words):
-                    if word in pred:
-                        pred_final = w2n.word_to_num(word)   
+            # Check "forty five" in the string
+            for i ,word in enumerate(nums_words):
+                if word in pred:
+                    pred_final = w2n.word_to_num(word)
+            
+            if "single" in pred:
+                pred_final = w2n.word_to_num("one") 
 
+
+            df.at[j,'pred_final'] = int(pred_final)
+            df.at[j,'pred_new'] = int(pred_new)
             # check for numbers 
         elif qtype == 'junction':
             pred_final,pred_new = "",""
             pass 
             # answer yes or no - first word 
             pred_final = sl[0]
+
+            df.at[j,'pred_final'] = pred_final
+            df.at[j,'pred_new'] = pred_new
 
         elif qtype == 'position':
             pred_final,pred_new = "",""
@@ -115,6 +115,9 @@ if __name__ == "__main__":
                     pred_new_list = sl[i+1:]
             else:
                 pass 
+                
+            df.at[j,'pred_final'] = pred_final
+            df.at[j,'pred_new'] = pred_new
 
             # Now Check if answer exist in this segment, then extract answer and write as answer else write the segment
             # answers - integrated_circuit.voltage_regulator,resistor.adjustable, resistor 
@@ -127,14 +130,17 @@ if __name__ == "__main__":
                     else:
                         flag=False
                 if flag:
-                    pred_final = answer
+                    pred_final = answer.strip()
                 else:
-                    pred_final = pred_new
+                    pred_final = pred_new.strip()
             else:
                 pass
 
+            df.at[j,'pred_final'] = pred_final
+            df.at[j,'pred_new'] = pred_new
+
         elif qtype == 'value':
-            pred_final,pred_new = [],""
+            pred_final,pred_new = [],[]
             for s in sl:
                 if any(letter.isdigit() for letter in str(s)):
                     pred_final.append(s)   
@@ -142,18 +148,16 @@ if __name__ == "__main__":
             # "The voltmeter displays a reading of 15 volts."
             # The values displayed on the voltage-dc_ac are 220V and 30V.
             # The current value indicated on the resistors is 100mA.
-
-            "Unfortunately, I cannot provide the current reading of the resistor.adjustable as it is not visible in the image. The image only shows a diagram of a circuit board with various components, but the actual values of the components are not provided."
-            # collect number in a list      
+            df.at[j,'pred_final'] = pred_final
+            df.at[j,'pred_new'] = pred_new
+            # "Unfortunately, I cannot provide the current reading of the resistor.adjustable as it is not visible in the image. The image only shows a diagram of a circuit board with various components, but the actual values of the components are not provided."
+            # # collect number in a list      
         else:
             pass 
             
         #ic(pred_final,pred_new,qtype,answer)
-        ic(pred_final,pred_new,j)
-        df.at[j,'pred_final'] = pred_final
-        df.at[j,'pred_new'] = pred_new 
 
-
+    
     df.rename(columns={'prediction':'raw_prediction','pred_final':'prediction','pred_new':'pred_segment'},inplace=True)    
     df.to_csv(os.path.join(RESULTS_DIR,'predictions-final.csv'), index=None) # , lines=True)
     df.to_json(os.path.join(RESULTS_DIR,'predictions-final.json'), orient='records', lines=True)

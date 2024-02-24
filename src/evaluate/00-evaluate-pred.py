@@ -10,15 +10,15 @@ import re
 import os 
 
 if __name__ == "__main__":
-    # MODEL="LLaVA"
-    # PREDICTION_FILE="predictions-final.csv"
-    # exp_list = ['ocr-post']
+    MODEL="LLaVA"
+    PREDICTION_FILE="predictions-final.csv"
+    exp_list = ['ocr-pre']
 
     #MODEL='BLIP' # BLIP,GIT,PIX
     #MODEL='GIT'  # LLaVA
-    MODEL='PIX'
-    PREDICTION_FILE="predictions.csv"
-    exp_list = ['bbox-yolo']#,'bbox-segment-yolo']
+    # MODEL='PIX'
+    # PREDICTION_FILE="predictions.csv"
+    # exp_list = ['bbox-yolo']#,'bbox-segment-yolo']
    
     
    
@@ -36,7 +36,11 @@ if __name__ == "__main__":
 
     #exp_list = ['base-lr','desc','ocr-pre','ocr-post','wce','bbox','bbox-segment','all'] # PIX
     #exp_list = ['base','base-lr','desc','ocr-pre','ocr-post','wce','bbox','bbox-segment','all'] # GIT
-    #exp_list = ['base','base-lr','desc','ocr-pre','ocr-post','wce','bbox','bbox-segment','all'] # BLIP
+    
+    # MODEL='BLIP'
+    # PREDICTION_FILE="predictions.csv"
+    # exp_list = ['base','base-lr','desc','ocr-pre','ocr-post','wce','bbox','bbox-segment','all','bbox-yolo','bbox-segment-yolo'] # BLIP
+
 
    
     for EXP in exp_list:
@@ -51,6 +55,7 @@ if __name__ == "__main__":
 
         #if MODEL in ['BLIP','GIT','PIX']:
         df['prediction'] = df.apply(lambda row : row.prediction.split(".")[0] if row.qtype =='count-complex'  else row.prediction,axis=1)
+        df['prediction'] = df.apply(lambda row : row.prediction.split(".")[0] if row.qtype =='count'  else row.prediction,axis=1)
         # df = df[df.qtype=='count-complex']
         ic(df.shape)
         ic(df.info())

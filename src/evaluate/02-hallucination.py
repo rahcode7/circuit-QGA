@@ -15,7 +15,7 @@ import ast
 if __name__ == "__main__":
     MODEL="LLaVA"
     PREDICTION_FILE="predictions-final.csv"
-    exp_list = ['ocr-post','base']
+    exp_list = ['ocr-post','base','desc','bbox','ocr-pre']
     
     # MODEL='BLIP'  # LLaVA
     # PREDICTION_FILE="predictions.csv"
@@ -29,6 +29,11 @@ if __name__ == "__main__":
     # MODEL='GIT'  # LLaVA
     # PREDICTION_FILE="predictions.csv"
     # exp_list = ['base','base-lr','desc','ocr-pre','ocr-post','wce','bbox','bbox-segment','all'] # GIT
+
+    # MODEL='PIX' # BLIP
+    # PREDICTION_FILE="predictions.csv"
+    # exp_list = ['base-lr','desc','ocr-pre','ocr-post','wce','bbox','bbox-segment','all','bbox-yolo'] # BLIP
+
 
     ROOT_DIR = '/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-' + MODEL  + '-hf'
     SIZE = '384' # 576 
