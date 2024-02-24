@@ -29,12 +29,11 @@ if __name__ == "__main__":
 
 
     #model = InstructBlipForConditionalGeneration.from_pretrained("Salesforce/instructblip-vicuna-7b")
-    model = InstructBlipForConditionalGeneration.from_pretrained("Salesforce/instructblip-vicuna-7b") #,load_in_4bit=True, torch_dtype=torch.float16)
-
+    model = InstructBlipForConditionalGeneration.from_pretrained("Salesforce/instructblip-vicuna-7b",load_in_4bit=True, torch_dtype=torch.float16)
     processor = InstructBlipProcessor.from_pretrained("Salesforce/instructblip-vicuna-7b")
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    model.to(device)
+    #model.to(device)
         
     df = pd.read_json(QUESTIONS_PATH)
     ic(df.head(5))
@@ -119,7 +118,7 @@ if __name__ == "__main__":
                 else:
                     prompt += q.split("?")[0] + " ? "
                 
-                inputs = processor(images=image, text=prompt, return_tensors="pt").to(device)
+                inputs = processor(images=image, text=prompt, return_tensors="pt").to(device="cuda", dtype=torch.float16)
 
                 outputs = model.generate(
                     **inputs,
