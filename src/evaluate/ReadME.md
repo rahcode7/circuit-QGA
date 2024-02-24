@@ -9,6 +9,7 @@ exp_list = ['base','base-lr','desc','ocr-pre','ocr-post','wce','bbox','bbox-segm
 ```
 
 #### 1.1 For LLAVA
+```
 conda activate llava
 python /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/circuit-QGA/models-hf/cqa-llava/post-process.py --prediction_dir /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-LLaVa-hf/results-ddp/384a/bbox --exp_name ocr-pre
 python /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/circuit-QGA/src/evaluate/00-evaluate-pred.py
@@ -16,7 +17,7 @@ python /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/circuit-QGA/src/evaluate/0
 MODEL="LLaVA"
 PREDICTION_FILE="predictions-final.csv"
 exp_list = ['ocr-post','base','desc','bbox']
-
+```
 
 ### 2. Run
 ```
