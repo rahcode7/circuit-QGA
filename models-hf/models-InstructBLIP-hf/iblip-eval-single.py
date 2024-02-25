@@ -28,27 +28,24 @@ if __name__ == "__main__":
     EXP = args.exp_name
 
 
-    #model = InstructBlipForConditionalGeneration.from_pretrained("Salesforce/instructblip-vicuna-7b")
-    model = InstructBlipForConditionalGeneration.from_pretrained("Salesforce/instructblip-vicuna-7b",load_in_4bit=True, torch_dtype=torch.float16)
+    model = InstructBlipForConditionalGeneration.from_pretrained("Salesforce/instructblip-vicuna-7b")
+    #model = InstructBlipForConditionalGeneration.from_pretrained("Salesforce/instructblip-vicuna-7b",load_in_4bit=True, torch_dtype=torch.float16)
     processor = InstructBlipProcessor.from_pretrained("Salesforce/instructblip-vicuna-7b")
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    #model.to(device)
+    
+    # uncomment for MAC, comment for MS
+    model.to(device) 
         
     df = pd.read_json(QUESTIONS_PATH)
     ic(df.head(5))
 
     df = df[df.splittype=="test"]
-    #ic(df['symbol'].isna().sum() )
     
     df['symbol'] = df['symbol'].apply(lambda x : " " if x is None else x)
-   
-    #ic(df['symbol'].isna().sum())
 
     image_list = df['file'].unique().tolist()
 
-    #col_list = ['splittype', 'file','question', 'answer','qtype','symbol','prediction']
-    #pred_df = pd.DataFrame(columns=col_list)
     if EXP == 'desc':  
         df = df[df['qtype'].isin(['count','count-complex'])]
         df['desc'] = df['desc'].apply(lambda x : " " if x is None else x)
@@ -63,10 +60,7 @@ if __name__ == "__main__":
     ic(os.path.join(OUTPUT_PATH,'predictions.json'))
 
     cnt = 0 
-    prompt = ""
     for image_file in tqdm(image_list):
-        # cnt +=1
-        # if cnt>5:break
         q_df = df[df['file']==image_file] 
         
         file_name = image_file
@@ -87,6 +81,7 @@ if __name__ == "__main__":
                     
                 q = row['question']
                 answer = row['answer']
+                prompt = ""
 
                 if EXP == 'bbox-segment':
                     context = "Here are the bounding box segment of each component of the given image given in the a pair of component name and segment name. "  + row['bbox_segment']
@@ -118,8 +113,10 @@ if __name__ == "__main__":
                 else:
                     prompt += q.split("?")[0] + " ? "
                 
-                inputs = processor(images=image, text=prompt, return_tensors="pt").to(device="cuda", dtype=torch.float16)
-
+                #inputs = processor(images=image, text=prompt, return_tensors="pt").to(device=device, dtyp=torch.float16)
+                inputs = processor(images=image, text=prompt, return_tensors="pt").to(device=device) # MAC               
+                #ic(prompt)
+                
                 outputs = model.generate(
                     **inputs,
                     do_sample=False,

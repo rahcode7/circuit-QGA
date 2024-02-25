@@ -16,9 +16,14 @@ MODEL='InstructBLIP'
 EXP_NAME='base'
 DATASET_SIZE='384a'
 
+# MS
 export CUDA_VISIBLE_DEVICES=0
 python models-hf/models-InstructBLIP-hf/iblip-eval-single.py --question_dir datasets/questions/all/master.json  \
     --image_dir datasets/$DATASET_SIZE --results_dir datasets/results/InstructBLIP/$EXP_NAME --exp_name $EXP_NAME
+
+# Ada
+python models-hf/models-InstructBLIP-hf/iblip-eval-single.py --question_dir ../datasets/questions/all/master.json  \
+    --image_dir ../datasets/$DATASET_SIZE --results_dir ../datasets/results/InstructBLIP/$EXP_NAME --exp_name $EXP_NAME
 
 ```
 

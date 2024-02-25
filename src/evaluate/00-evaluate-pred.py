@@ -12,7 +12,7 @@ import os
 if __name__ == "__main__":
     MODEL="LLaVA"
     PREDICTION_FILE="predictions-final.csv"
-    exp_list = ['ocr-pre']
+    exp_list = ['bbox-yolo']
 
     #MODEL='BLIP' # BLIP,GIT,PIX
     #MODEL='GIT'  # LLaVA
@@ -20,7 +20,6 @@ if __name__ == "__main__":
     # PREDICTION_FILE="predictions.csv"
     # exp_list = ['bbox-yolo']#,'bbox-segment-yolo']
    
-    
    
     ROOT_DIR = '/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-' + MODEL  + '-hf'
     SIZE = '384' # 576 

@@ -15,7 +15,8 @@ import ast
 if __name__ == "__main__":
     MODEL="LLaVA"
     PREDICTION_FILE="predictions-final.csv"
-    exp_list = ['ocr-post','base','desc','bbox','ocr-pre']
+    #exp_list = ['ocr-post','base','desc','bbox','ocr-pre']
+    exp_list = ['bbox-yolo']
     
     # MODEL='BLIP'  # LLaVA
     # PREDICTION_FILE="predictions.csv"
