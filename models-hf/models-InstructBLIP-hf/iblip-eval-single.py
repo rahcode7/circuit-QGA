@@ -35,7 +35,7 @@ if __name__ == "__main__":
     device = "cuda" if torch.cuda.is_available() else "cpu"
     
     # uncomment for MAC, comment for MS
-    # model.to(device) 
+    #model.to(device) 
         
     df = pd.read_json(QUESTIONS_PATH)
     ic(df.head(5))
@@ -92,7 +92,7 @@ if __name__ == "__main__":
                     #prompt = "Given the image, answer the following question."
                 elif EXP == 'desc':      
                     #ic(row)  
-                    if row['symbol'] == "" or row['desc'] == "":
+                    if row['desc']:
                         context = "The question is about the circuit : " + row['symbol'] + " .Its definition is as following :" + row['desc']
                         prompt = context + " "
                     else: # use base prompt
