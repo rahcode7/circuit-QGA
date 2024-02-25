@@ -55,7 +55,7 @@ DATASET_SIZE='384a'
 
 python models-hf/models-InstructBLIP-hf/iblip-eval-single.py --question_dir datasets/questions/all/master_adv_ocr.json  \
     --image_dir datasets/$DATASET_SIZE --results_dir datasets/results/InstructBLIP/$EXP_NAME --exp_name $EXP_NAME
-```
+``` 
 
 #### BBOX-YOLO model 
 ```
