@@ -22,7 +22,7 @@ python models-hf/models-InstructBLIP-hf/iblip-eval-single.py --question_dir data
     --image_dir datasets/$DATASET_SIZE --results_dir datasets/results/InstructBLIP/$EXP_NAME --exp_name $EXP_NAME
 
 # Ada
-python models-hf/models-InstructBLIP-hf/iblip-eval-single.py --question_dir ../datasets/questions/all/master.json  \
+python models-hf/models-InstructBLIP-hf/iblip-eval-single-mac.py --question_dir ../datasets/questions/all/master_adv_ocr.json  \
     --image_dir ../datasets/$DATASET_SIZE --results_dir ../datasets/results/InstructBLIP/$EXP_NAME --exp_name $EXP_NAME
 
 ```
@@ -43,7 +43,7 @@ MODEL='InstructBLIP'
 EXP_NAME='ocr-pre'
 DATASET_SIZE='384a'
 
-python models-hf/models-InstructBLIP-hf/iblip-eval-single.py --question_dir datasets/questions/all/master_ocr.json  \
+python models-hf/models-InstructBLIP-hf/iblip-eval-single.py --question_dir datasets/questions/all/master_adv.json  \
     --image_dir datasets/$DATASET_SIZE --results_dir datasets/results/InstructBLIP/$EXP_NAME --exp_name $EXP_NAME
 ```
 
@@ -60,7 +60,7 @@ python models-hf/models-InstructBLIP-hf/iblip-eval-single.py --question_dir data
 #### BBOX-YOLO model 
 ```
 MODEL='InstructBLIP'
-EXP_NAME='bbox'
+EXP_NAME='bbox-yolo'
 DATASET_SIZE='384a'
 
 python models-hf/models-InstructBLIP-hf/iblip-eval-single.py --question_dir datasets/questions/all/master_bbox_yolo.json  \
@@ -70,12 +70,34 @@ python models-hf/models-InstructBLIP-hf/iblip-eval-single.py --question_dir data
 #### BBOX-Segment-YOLO  model 
 ```
 MODEL='InstructBLIP'
-EXP_NAME='bbox-segment'
+EXP_NAME='bbox-segment-yolo'
 DATASET_SIZE='384a'
 
 python models-hf/models-InstructBLIP-hf/iblip-eval-single.py --question_dir datasets/questions/all/master_bbox_segment_yolo.json  \
     --image_dir datasets/$DATASET_SIZE --results_dir datasets/results/InstructBLIP/$EXP_NAME --exp_name $EXP_NAME
 
 ```
+
+#### BBOX-ORACLE model 
+```
+MODEL='InstructBLIP'
+EXP_NAME='bbox'
+DATASET_SIZE='384a'
+
+python models-hf/models-InstructBLIP-hf/iblip-eval-single.py --question_dir datasets/questions/all/master_bbox.json  \
+    --image_dir datasets/$DATASET_SIZE --results_dir datasets/results/InstructBLIP/$EXP_NAME --exp_name $EXP_NAME
+```
+
+#### BBOX-Segment-ORACLE model 
+```
+MODEL='InstructBLIP'
+EXP_NAME='bbox-segment'
+DATASET_SIZE='384a'
+
+python models-hf/models-InstructBLIP-hf/iblip-eval-single.py --question_dir datasets/questions/all/master_bbox_segment.json  \
+    --image_dir datasets/$DATASET_SIZE --results_dir datasets/results/InstructBLIP/$EXP_NAME --exp_name $EXP_NAME
+
+```
+
 
 ### Step 2 Upload Experiments here
