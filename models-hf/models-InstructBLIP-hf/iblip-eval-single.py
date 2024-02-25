@@ -35,7 +35,7 @@ if __name__ == "__main__":
     device = "cuda" if torch.cuda.is_available() else "cpu"
     
     # uncomment for MAC, comment for MS
-    model.to(device) 
+    # model.to(device) 
         
     df = pd.read_json(QUESTIONS_PATH)
     ic(df.head(5))
@@ -113,8 +113,8 @@ if __name__ == "__main__":
                 else:
                     prompt += q.split("?")[0] + " ? "
                 
-                #inputs = processor(images=image, text=prompt, return_tensors="pt").to(device=device, dtyp=torch.float16)
-                inputs = processor(images=image, text=prompt, return_tensors="pt").to(device=device) # MAC               
+                inputs = processor(images=image, text=prompt, return_tensors="pt").to(device=device, dtype=torch.float16)
+                #inputs = processor(images=image, text=prompt, return_tensors="pt").to(device=device) # MAC               
                 #ic(prompt)
                 
                 outputs = model.generate(
