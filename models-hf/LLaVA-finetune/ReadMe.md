@@ -8,10 +8,15 @@ conda activate cqa-base
 pip install deepspeed
 ```
 
-
 <!-- scp -r /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/circuit-QGA/models-hf/LLaVA-finetune/ada-script-llava.sh rahul.mehta@ada:circuitQA/models-hf/
+scp -r /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/circuit-QGA/models-hf/LLaVA-finetune/train.py rahul.mehta@ada:circuitQA/LLaVA/llava/train/train.py
+
+
 sbatch models-hf/ada-script-llava.sh 
-cat runs/llava/llava-base.txt  -->
+cat runs/llava/llava-base.txt 
+squeue -u $USER
+
+ -->
 #### Step 1 : Get instruction traiv/val datasets
 
 
@@ -27,7 +32,7 @@ CHECKPOINT="checkpoints-$MODEL-$EXP_NAME-$DATE"
 mkdir $CHECKPOINT
 export CUDA_VISIBLE_DEVICES=0
 
- deepspeed LLaVA/llava/train/train_mem.py \
+deepspeed LLaVA/llava/train/train_mem.py \
         --deepspeed LLaVA/scripts/zero2.json \
         --lora_enable True \
         --lora_r 128 \
@@ -46,14 +51,13 @@ export CUDA_VISIBLE_DEVICES=0
         --mm_use_im_patch_token False \
         --image_aspect_ratio pad \
         --group_by_modality_length True \
-        --bf16 False \
+        --bf16 True \
         --output_dir $CHECKPOINT \
         --num_train_epochs 5 \
         --per_device_train_batch_size 32 \
         --per_device_eval_batch_size 32 \
         --gradient_accumulation_steps 1 \
-        --evaluation_strategy epoch \ 
-        #--save_strategy 'steps' \
+        --evaluation_strategy epoch --save_strategy steps \
         --save_steps 50000 \
         --save_total_limit 1 \
         --learning_rate 2e-4 \
@@ -66,5 +70,5 @@ export CUDA_VISIBLE_DEVICES=0
         --gradient_checkpointing True \
         --dataloader_num_workers 4 \
         --lazy_preprocess True \
-        --report_to wandb           
+        --report_to wandb  
 ```

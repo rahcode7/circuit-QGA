@@ -47,8 +47,7 @@ if [ "$RUN_TYPE" = "train" ]; then
         --per_device_train_batch_size 32 \
         --per_device_eval_batch_size 32 \
         --gradient_accumulation_steps 1 \
-        --evaluation_strategy "epoch" \ 
-        --save_strategy "steps" \
+        --evaluation_strategy "epoch" --save_strategy "steps" \
         --save_steps 5000 \
         --save_total_limit 1 \
         --learning_rate 2e-4 \
