@@ -6,10 +6,12 @@ conda activate cqa-base
 #### Step 0 
 ```
 pip install deepspeed
+pip install flash-attn
 ```
 
 <!-- scp -r /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/circuit-QGA/models-hf/LLaVA-finetune/ada-script-llava.sh rahul.mehta@ada:circuitQA/models-hf/
 scp -r /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/circuit-QGA/models-hf/LLaVA-finetune/train.py rahul.mehta@ada:circuitQA/LLaVA/llava/train/train.py
+scp -r /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/circuit-QGA/models-hf/LLaVA-finetune/train_mem.py rahul.mehta@ada:circuitQA/LLaVA/llava/train/train_mem.py
 
 
 sbatch models-hf/ada-script-llava.sh 
