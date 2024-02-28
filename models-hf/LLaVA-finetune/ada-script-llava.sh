@@ -22,14 +22,14 @@ if [ "$RUN_TYPE" = "train" ]; then
     mkdir $CHECKPOINT
     export CUDA_VISIBLE_DEVICES=0
 
-    deepspeed LLaVA/llava/train/train_mem.py \
-        --deepspeed LLaVA/scripts/zero2.json \
+    deepspeed finetune_LLaVA/llava/train/train_mem.py \
+        --deepspeed /home2/rahul.mehta/circuitQA/finetune_LLaVA/scripts/zero2.json \
         --lora_enable True \
         --lora_r 128 \
         --lora_alpha 256 \
         --mm_projector_lr 2e-5 \
         --bits 4 \
-        --model_name_or_path LLaVA/llava/llava-v1.5-7b \
+        --model_name_or_path /home2/rahul.mehta/circuitQA/finetune_LLaVA/llava/llava-v1.5-7b \
         --version llava_llama_2 \
         --data_path datasets/llava/train/dataset.json \
         --validation_data_path datasets/llava/val/dataset.json \
@@ -55,7 +55,7 @@ if [ "$RUN_TYPE" = "train" ]; then
         --warmup_ratio 0.03 \
         --lr_scheduler_type "cosine" \
         --logging_steps 1 \
-        --tf32 False \
+        --tf32 False  \
         --model_max_length 2048 \
         --gradient_checkpointing True \
         --dataloader_num_workers 4 \

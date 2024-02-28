@@ -6,17 +6,27 @@ conda activate cqa-base
 #### Step 0 
 ```
 pip install deepspeed
-pip install flash-attn
+pip install flash-attn==2.3.3
+pip install torch-2.0.1
+
+
+cd LLaVA/llava
+git lfs install
+git clone https://huggingface.co/liuhaotian/llava-v1.5-7b
+
 ```
 
 <!-- scp -r /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/circuit-QGA/models-hf/LLaVA-finetune/ada-script-llava.sh rahul.mehta@ada:circuitQA/models-hf/
 scp -r /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/circuit-QGA/models-hf/LLaVA-finetune/train.py rahul.mehta@ada:circuitQA/LLaVA/llava/train/train.py
 scp -r /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/circuit-QGA/models-hf/LLaVA-finetune/train_mem.py rahul.mehta@ada:circuitQA/LLaVA/llava/train/train_mem.py
-
+scp -r /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/others/git-lfs-linux-amd64-v2.9.0.tar.gz rahul.mehta@ada
 
 sbatch models-hf/ada-script-llava.sh 
 cat runs/llava/llava-base.txt 
 squeue -u $USER
+
+cp -r circuitQA ~/share1
+
 
  -->
 #### Step 1 : Get instruction traiv/val datasets
@@ -53,7 +63,7 @@ deepspeed LLaVA/llava/train/train_mem.py \
         --mm_use_im_patch_token False \
         --image_aspect_ratio pad \
         --group_by_modality_length True \
-        --bf16 True \
+        --bf16 False \
         --output_dir $CHECKPOINT \
         --num_train_epochs 5 \
         --per_device_train_batch_size 32 \
@@ -67,7 +77,7 @@ deepspeed LLaVA/llava/train/train_mem.py \
         --warmup_ratio 0.03 \
         --lr_scheduler_type "cosine" \
         --logging_steps 1 \
-        --tf32 True \
+        --tf32 False \
         --model_max_length 2048 \
         --gradient_checkpointing True \
         --dataloader_num_workers 4 \
