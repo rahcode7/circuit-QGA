@@ -38,6 +38,8 @@ if __name__ == "__main__":
     ic(df.head(4))
 
     df = df[['id','file','question','image_url']]
+
+    ic(df['file'].nunique())
     #df.to_csv(os.path.join(OP_PATH,"master.txt"), sep="\t",index=None)
 
     # create chunks

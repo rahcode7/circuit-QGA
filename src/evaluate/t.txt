@@ -1,0 +1,68 @@
+Thanks, Rahul. This is a good example.
+How about this?
+
+HVQAin-domain = avg[Total number of incorrect in-domain object predicted/ Total number of predictions] = avg [ Q1 (1/1)  + Q2 (0/1)+ Q3 (0) + Q4(0)]=1/4.
+
+HVQAout-domain = avg [Total number of incorrect out-domain objects predicted / Total number of predictions] = avg [Q1(0/1) + Q2(1/1) + Q3 (0) + Q4(0)] = 1/4.
+
+HVQAcount = avg [Overcounting/Prediction]= avg [Q1 (0/1)+ Q2 (0/1) + Q3 (9/13)+ Q4 (0/3)]=9/52.
+
+VQAfinal  = (0.25 + 0.25 + 9/52) / 3 = 0.224
+
+We use HVQAcount for counting based questions only. We do not use counting based questions for HVQAin-domain and HVQAout-domain. Averages are first computed over entire test set (see how I divided by 4) and then over the 3 types of hallucination (see how I divided by 3). For HVQAcount, the denominator is #predictions and not #actual -- this helps to keep the number as a fraction. Also, HVQAcount should be calculated wrt prediction logically rather than actual. Denominator across all types should be #predictions and never #actual.
+
+Regards,
+Manish
+
+On Tue, Feb 27, 2024 at 11:05 PM Rahul Mehta <rahul.mehta@research.iiit.ac.in> wrote:
+Hi Sir, 
+
+I looked at the overleaf descriptions, yes sir, it can be defined at the system level sir and we can compute it.
+Let me know sir if my understanding is correct or not with the following example.
+
+For a set of 4 questions for a given image containing 4 resistors and 5 capacitors only.
+Q1. Which symbol is on the leftmost position ?  Prediction = voltage, Actual = resistor
+
+Here 1 in-domain object predicted, 0 out-domain object predicted and 1 Number of predictions
+
+
+
+Q2. Which symbol is on rightmost position ?  Prediction = cat, Actual = resistor 
+
+0 in-domain object predicted, 1 out-domain object predicted and 1 number of predictions
+
+
+
+Q3. Count the number of resistors in the image ? Prediction = 13, Actual = 4
+
+Overcounting = 13-4 = 9
+
+
+
+Q4. Count the number of capacitors in the image ? Prediction = 3, Actual = 5
+
+Overcounting = 0
+
+
+
+Hallucination calculations 
+
+
+
+HVQAin-domain = Total number of incorrect in-domain object predicted/ Total number of predictions = Q1 (1/1)  + Q1 (0/1)+ Q3 (0) + Q4(0)   = 0.5   (Query 1 - For counting questions Q3 and Q4, the HVQAin-domain should be considered 0,right sir ?)
+
+
+
+HVQAout-domain = Total number of incorrect out-domain objects predicted / Total number of predictions = Q1(0/1) + Q2(0/1) + q3(0) + q4(0)  = 0.5 
+
+
+
+HVQAcount = Sum of (Overcounting) / Actual)  / Total number of questions
+                  =  Q3(13-4/ 4 =9/4 = 2.25)  +  Q4 (0) /  (2) [if only counting questions or 4 if all questions considered]
+                            = (2.25 + 0) / 2  =  1.125   or   (2.25 + 0 + 0 + 0)/ 4 (all questions considered)  = 0.56
+
+VQAfinal  = (1.125 + 0.5 + 0.5) / 3 
+
+Query -2 
+For HVQAcount, if we consider only counting questions, we get smaller denominator and hence large score 1.125 and at overall system level if we consider all questions we get lower score.
+In the latter case, the question which is not about counting will also be considered but that question types will never have overcounting . I think keeping the counting question denominator will be better and set it 0 for other questions.
