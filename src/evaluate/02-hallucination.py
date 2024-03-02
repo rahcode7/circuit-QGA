@@ -14,15 +14,14 @@ import ast
 import json 
 
 if __name__ == "__main__":
-    # MODEL="LLaVA"
-    # PREDICTION_FILE="predictions-final.csv"
-    # exp_list = ['ocr-post','base','desc','bbox','ocr-pre']
+    MODEL="LLaVA"
+    PREDICTION_FILE="predictions-final.csv"
+    exp_list = ['base','ocr-pre','ocr-post','desc','bbox','bbox-segment','bbox-yolo','bbox-segment-yolo']
     #exp_list = ['base']
     
     # MODEL='BLIP'  # LLaVA
     # PREDICTION_FILE="predictions.csv"
     # exp_list = ['base','base-lr','desc','ocr-pre','ocr-post','wce','bbox','bbox-segment','all'] # BLIP
-
 
     # MODEL='PIX'  # LLaVA
     # PREDICTION_FILE="predictions.csv"
@@ -32,9 +31,9 @@ if __name__ == "__main__":
     # PREDICTION_FILE="predictions.csv"
     # exp_list = ['base','base-lr','desc','ocr-pre','ocr-post','wce','bbox','bbox-segment','all'] # GIT
 
-    MODEL='BLIP' # BLIP
-    PREDICTION_FILE="predictions.csv"
-    exp_list = ['base-lr'] #,'desc','ocr-pre','ocr-post','wce','bbox','bbox-segment','all','bbox-yolo'] # BLIP
+    # MODEL='BLIP' # BLIP
+    # PREDICTION_FILE="predictions.csv"
+    # exp_list = ['base-lr','desc','ocr-pre','ocr-post','wce','bbox','bbox-segment','all','bbox-yolo','bbox-segment-yolo'] # BLIP
 
 
     ROOT_DIR = '/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-' + MODEL  + '-hf'
@@ -131,7 +130,7 @@ if __name__ == "__main__":
                     la = len(row['answer'][1:-1].split(","))
                 #     lp = len(list(row['prediction']))
                 #     la = len(list(row['answer']))
-                    ic(lp,la)
+                    #ic(lp,la)
                 if lp > la:
                     cnt_over = (lp - la) / lp
 

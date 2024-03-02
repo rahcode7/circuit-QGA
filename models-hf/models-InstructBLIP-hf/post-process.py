@@ -12,18 +12,30 @@ from icecream import ic
 from tqdm import tqdm 
 # commands 
 #python post-process.py --prediction_dir /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/results/llava/384a/base
+#python models-hf/models-InstructBLIP-hf/post-process.py --prediction_dir /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-InstructBLIP-hf/results-ddp/384a --model InstructBLIP --exp_name base
+#python models-hf/models-InstructBLIP-hf/post-process.py --prediction_dir /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-InstructBLIP-hf/results-ddp/384a --model InstructBLIP --exp_name bbox
+# python models-hf/models-InstructBLIP-hf/post-process.py --prediction_dir /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-InstructBLIP-hf/results-ddp/384a --model InstructBLIP --exp_name ocr-post
+# python models-hf/models-InstructBLIP-hf/post-process.py --prediction_dir /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-InstructBLIP-hf/results-ddp/384a --model InstructBLIP --exp_name ocr-pre
+# python models-hf/models-InstructBLIP-hf/post-process.py --prediction_dir /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-InstructBLIP-hf/results-ddp/384a --model InstructBLIP --exp_name desc
+
+# python models-hf/models-InstructBLIP-hf/post-process.py --prediction_dir /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-InstructBLIP-hf/results-ddp/384a --model InstructBLIP --exp_name bbox-segment
+# python models-hf/models-InstructBLIP-hf/post-process.py --prediction_dir /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-InstructBLIP-hf/results-ddp/384a --model InstructBLIP --exp_name bbox-yolo
+# python models-hf/models-InstructBLIP-hf/post-process.py --prediction_dir /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-InstructBLIP-hf/results-ddp/384a --model InstructBLIP --exp_name bbox-segment-yolo
 
 if __name__ == "__main__":
     start_time = time.time()
     parser = argparse.ArgumentParser()
     
     parser.add_argument('--prediction_dir', help='directory')
-    parser.add_argument('--exp_name', help='directory')
-    
+    parser.add_argument('--model', help='model')
+    parser.add_argument('--exp_name', help='exp')
+   
     args = parser.parse_args()
 
     RESULTS_DIR = args.prediction_dir
     EXP_NAME = args.exp_name 
+    MODEL = args.model 
+
 
     input_file = os.path.join(RESULTS_DIR,EXP_NAME,'predictions.json')
     df = pd.read_json(input_file, lines=True)
@@ -39,7 +51,7 @@ if __name__ == "__main__":
 
     p = inflect.engine()
 
-    nums = [i for i in range(1,51)]
+    nums = [i for i in range(0,51)]
     nums_words = [p.number_to_words(i).replace("-"," ") for i in nums]
     nums_words = nums_words[::-1]
     
@@ -67,25 +79,34 @@ if __name__ == "__main__":
         
         if qtype == 'count' or qtype == 'count-complex':
             pred_final,pred_new = -1,-1
-            # There are two multi-cell batteries connected directly to the left of C1.
-            # There are two capacitor-unpolarized connected directly to the left of C19.
-            # Yes, the image shows a circuit diagram with a total of 14 diode light emittings.
-            # The image shows a circuit diagram with a number of resistors, but without knowing the specific details of the diagram, it is not possible to provide an accurate count of the resistors.
-            # There are two components in the circuit that function as current-sources.
-            
-            for num in nums:
-                if " " + str(num) + " " in pred:
-                    pred_final = num 
 
-            # Check "forty five" in the string
-            for i ,word in enumerate(nums_words):
-                if word in pred:
-                    pred_final = w2n.word_to_num(word)
-            
-            if "single" in pred:
-                pred_final = w2n.word_to_num("one") 
+            # FOR INSTRUCT-BLIP  
+            if MODEL == 'InstructBLIP':   
+                # pred_final = pred
+                # pred_new = pred 
+                for num in nums:
+                    if str(num) in pred:
+                        pred_final = num  
+                        pred_new = num      
+            elif MODEL == 'LLaVA':            
+                # There are two multi-cell batteries connected directly to the left of C1.
+                # There are two capacitor-unpolarized connected directly to the left of C19.
+                # Yes, the image shows a circuit diagram with a total of 14 diode light emittings.
+                # The image shows a circuit diagram with a number of resistors, but without knowing the specific details of the diagram, it is not possible to provide an accurate count of the resistors.
+                # There are two components in the circuit that function as current-sources.
+                for num in nums:
+                    if " " + str(num) + " " in pred:
+                        pred_final = num 
 
+                # Check "forty five" in the string
+                for i ,word in enumerate(nums_words):
+                    if word in pred:
+                        pred_final = w2n.word_to_num(word)
+                
+                if "single" in pred:
+                    pred_final = w2n.word_to_num("one") 
 
+            #ic(pred,pred_final)
             df.at[j,'pred_final'] = int(pred_final)
             df.at[j,'pred_new'] = int(pred_new)
             # check for numbers 

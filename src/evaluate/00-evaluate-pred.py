@@ -12,7 +12,7 @@ import os
 if __name__ == "__main__":
     MODEL="LLaVA"
     PREDICTION_FILE="predictions-final.csv"
-    exp_list = ['bbox-yolo']
+    exp_list = ['bbox-segment']
 
     #MODEL='BLIP' # BLIP,GIT,PIX
     #MODEL='GIT'  # LLaVA

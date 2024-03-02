@@ -10,7 +10,7 @@ RESULTS_DIR = '/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/results'
 if __name__ == "__main__":
 
 
-    MODELS = ['BLIP'] # ,'GIT'] # ,'PIX']
+    MODELS = ['LLaVA'] # ,'GIT'] # ,'PIX']
     SIZE = '384'
 
     df = pd.DataFrame(columns=['qtype','precision','recall','fscore','average','size','model','model_category'])
