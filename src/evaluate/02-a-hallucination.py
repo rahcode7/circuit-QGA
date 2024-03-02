@@ -14,7 +14,7 @@ import ast
 import json 
 
 if __name__ == "__main__":
-    MODEL="LLaVA"
+    MODEL="InstructBLIP"
     PREDICTION_FILE="predictions-final.csv"
     exp_list = ['base','ocr-pre','ocr-post','desc','bbox','bbox-segment','bbox-yolo','bbox-segment-yolo']
     #exp_list = ['base']
@@ -50,10 +50,12 @@ if __name__ == "__main__":
         df = pd.read_csv(os.path.join((ROOT_DIR),results_dir,PREDICTION_FILE))
         #ic(df.head(2))
         
-        # #if MODEL in ['BLIP','GIT','PIX']:
+        # #if MODEL in ['BLIP','GIT','PIX']
         df['prediction'] = df.apply(lambda row : str(row.prediction).split(".")[0] if row.qtype in ['count-complex','count']  else str(row.prediction),axis=1)
         #df['prediction'] = df.apply(lambda row : str(row.prediction).split(".")[0] if row.qtype in ['count-complex','count']  else str(row.prediction),axis=1)
-        df['answer'] = df.apply(lambda row : row.answer.split(".")[0] if row.qtype in ['count-complex','count']  else row.answer,axis=1)
+
+        
+        df['answer'] = df.apply(lambda row : str(row.answer).split(".")[0] if row.qtype in ['count-complex','count']  else str(row.answer),axis=1)
         #ic(df.info())
 
         # df['cnt_over']  = np.where(df['prediction'] > df['answer'],df['prediction']-df['answer'],0)
