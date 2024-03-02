@@ -14,7 +14,8 @@ import ast
 import json 
 
 if __name__ == "__main__":
-    MODEL="InstructBLIP"
+    #MODEL="InstructBLIP" # 
+    MODEL='LLaVA'
     PREDICTION_FILE="predictions-final.csv"
     exp_list = ['base','ocr-pre','ocr-post','desc','bbox','bbox-segment','bbox-yolo','bbox-segment-yolo']
     #exp_list = ['base']
@@ -25,11 +26,11 @@ if __name__ == "__main__":
 
     # MODEL='PIX'  # LLaVA
     # PREDICTION_FILE="predictions.csv"
-    # exp_list = ['base-lr','desc','ocr-pre','ocr-post','wce','bbox','bbox-segment','all']
+    # exp_list = ['base-lr','desc','ocr-pre','ocr-post','wce','bbox','bbox-segment','bbox-yolo']
 
-    # MODEL='GIT'  # LLaVA
-    # PREDICTION_FILE="predictions.csv"
-    # exp_list = ['base','base-lr','desc','ocr-pre','ocr-post','wce','bbox','bbox-segment','all'] # GIT
+    #MODEL='GIT'  
+    #PREDICTION_FILE="predictions.csv"
+    #exp_list = ['base','base-lr','desc','ocr-pre','ocr-post','wce','bbox','bbox-segment','bbox-yolo','bbox-segment-yolo'] # GIT
 
     # MODEL='BLIP' # BLIP
     # PREDICTION_FILE="predictions.csv"
@@ -39,12 +40,11 @@ if __name__ == "__main__":
     ROOT_DIR = '/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-' + MODEL  + '-hf'
     SIZE = '384' # 576 
     
-    
     hs_vqa_list,hs_cnt_list,hs_ood_list,hs_id_list = [],[],[],[]
     op_dir = 'results-ddp/'  + SIZE + 'a'
 
     for EXP in exp_list:
-        ic(EXP)
+        #ic(EXP)
         
         results_dir = 'results-ddp/'  + SIZE + 'a/'+ EXP
         df = pd.read_csv(os.path.join((ROOT_DIR),results_dir,PREDICTION_FILE))
@@ -68,7 +68,8 @@ if __name__ == "__main__":
         class_list = list(class_dict.values())
         #ic(class_list)
 
-        oodomain = ['circle','square','A','B','D','F','triangle','carlin','nano','peizo-keeper','trigger','Snake Snake Detector','wire','line'] #'1','2','3','4','5','6','7','8']        
+        oodomain = ['circle','square','A','B','D','F','triangle','carlin','nano','peizo-keeper','trigger','Snake Snake Detector','wire','line'] 
+        oodomain_numbers = [str(i) for i in range(50)]
         idomain = class_list  # + ['yes','no']
         
         #total_cnt = 0 
@@ -80,23 +81,32 @@ if __name__ == "__main__":
             cnt_ood,cnt_id,cnt_over = 0,0,0
             #ic(row)
 
-            if row['qtype'] in ['position']:
+            if row['qtype'] in ['position','junction']:
                 #total+=1
                 
                 if MODEL == 'LLaVA':
                     l = row['raw_prediction'].lower().split()
                 else:
                     l = str(row['prediction']).split()
-                
+                    #ic(l)
 
                 for item in oodomain:
                     if item in l:
                         cnt_ood +=1 
 
-                for item in idomain:
-                    if item in l and item != str(row['answer']):
-                        cnt_id +=1 
-                
+                #for item in l: 
+                if l[0] in oodomain_numbers:              
+                    #ic(row['answer'],l,item,cnt_ood)
+                    cnt_ood+=1
+
+
+                #for item in idomain:
+                #if item in l and item != str(row['answer']):
+                if l[0] in idomain:
+                    #ic(l[0],l,row['answer'])
+                    cnt_id +=1 
+                    #ic(row['answer'],item,l,cnt_ood)
+
                 #ic(row['qtype'],row['answer'],row['raw_prediction'],cnt_ood,cnt_id)
 
             elif row['qtype'] in ['count','count-complex']:
@@ -114,6 +124,7 @@ if __name__ == "__main__":
                 if p > a:
                     #if row['qtype'] == 'count':
                     cnt_over  = (p - a) / p 
+                    #ic(p,a,cnt_over)
                     #ic(p,a,cnt_over)
 
                     # else:
@@ -135,6 +146,7 @@ if __name__ == "__main__":
                     #ic(lp,la)
                 if lp > la:
                     cnt_over = (lp - la) / lp
+                    #ic(row['prediction'],row['answer'],lp,la,cnt_over)
 
             df.at[j,'cnt_over'] = cnt_over 
             df.at[j,'cnt_ood'] = cnt_ood
@@ -142,20 +154,21 @@ if __name__ == "__main__":
             #df.at[j,'cnt_p'] = cnt_p 
 
         # HS score overall
-        cnt_over_total = df['cnt_over'][df['qtype'].isin(['count','count-complex','value'])].sum()
+        cnt_over_total = df['cnt_over'].sum() # [df['qtype'].isin(['count','count-complex','value'])].sum()
+        
         hs_cnt = cnt_over_total/df.shape[0]
 
-        ic(hs_cnt,cnt_over_total,cnt_p)
+        ic(hs_cnt,cnt_over_total,cnt_p,df['cnt_over'].groupby(df['qtype']).sum())
        
 
-        ood_total = df['cnt_ood'][df['qtype'].isin(['position','junction'])].sum()
+        ood_total = df['cnt_ood'].sum() # [df['qtype'].isin(['position','junction'])].sum()
         hs_ood = ood_total / df.shape[0]  # tota number of predictions
-        ic(hs_ood,ood_total,df.shape[0])
+        ic(hs_ood,ood_total,df['cnt_ood'].sum(),df.shape[0])
 
 
-        id_total = df['cnt_id'][df['qtype'].isin(['position','junction'])].sum()
+        id_total = df['cnt_id'].sum() # [df['qtype'].isin(['position','junction'])].sum()
         hs_id = id_total / df.shape[0] 
-        ic(hs_id,id_total,df.shape[0])
+        ic(hs_id,id_total,df['cnt_id'].sum(),df.shape[0])
 
         # hs_value = df['cnt_over'][df['qtype']=='value'].sum()/df[df['qtype']=='value'].shape[0]
         # ic(hs_value,df['cnt_over'][df['qtype']=='value'].sum(),df[df['qtype']=='value'].shape[0])
