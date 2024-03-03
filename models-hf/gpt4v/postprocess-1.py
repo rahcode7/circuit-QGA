@@ -23,7 +23,7 @@ if __name__ == "__main__":
 
     # Read all 23 files and join them first
     #df = pd.DataFrame(columns=['ROWID','id','file','question','image_url','Result.OutputResult','Result','Tokens','TimeTaken'])
-    path = '/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-gpt4v-hf/results' # use your path
+    path = '/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-gpt4v-hf/results/384a/base-all' # use your path
     all_files = glob.glob(os.path.join(path , "*.tsv"))
     ic(all_files)
     li = []
@@ -32,10 +32,10 @@ if __name__ == "__main__":
         li.append(small_df)
     #ic(li)
     df = pd.concat(li, axis=0, ignore_index=True)
-    ic(df.head(3))
+    ic(df.shape[0])
 
     # for file in all_results:
-    RESULTS_IP_DIR=""
+    
     #df = pd.read_csv('/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-gpt4v-hf/results/202403011749217491.tsv', sep='\t', header=0)
     #pd.concat(df,df_small )
 
@@ -68,6 +68,8 @@ if __name__ == "__main__":
     df_all = pd.merge(df_master,df)
     ic(df_all.head(10))
     
+
+    RESULTS_DIR="/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-gpt4v-hf/results/384a/base"
     df_all.to_csv(os.path.join(RESULTS_DIR,'predictions.csv'), index=None) # , lines=True)
     df_all.to_json(os.path.join(RESULTS_DIR,'predictions.json'), orient='records', lines=True)
 

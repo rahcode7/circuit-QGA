@@ -18,19 +18,19 @@ if __name__ == "__main__":
     MODEL='LLaVA'
     PREDICTION_FILE="predictions-final.csv"
     exp_list = ['base','ocr-pre','ocr-post','desc','bbox','bbox-segment','bbox-yolo','bbox-segment-yolo']
-    #exp_list = ['base']
+    exp_list = ['base']
     
-    # MODEL='BLIP'  # LLaVA
+    # MODEL='BLIP'  
     # PREDICTION_FILE="predictions.csv"
-    # exp_list = ['base','base-lr','desc','ocr-pre','ocr-post','wce','bbox','bbox-segment','all'] # BLIP
+    # exp_list = ['base','base-lr','desc','ocr-pre','ocr-post','wce','bbox','bbox-segment','bbox-yolo','bbox-segment-yolo'] # BLIP
 
-    # MODEL='PIX'  # LLaVA
+    # MODEL='PIX' 
     # PREDICTION_FILE="predictions.csv"
     # exp_list = ['base-lr','desc','ocr-pre','ocr-post','wce','bbox','bbox-segment','bbox-yolo']
 
-    #MODEL='GIT'  
-    #PREDICTION_FILE="predictions.csv"
-    #exp_list = ['base','base-lr','desc','ocr-pre','ocr-post','wce','bbox','bbox-segment','bbox-yolo','bbox-segment-yolo'] # GIT
+    # MODEL='GIT'  
+    # PREDICTION_FILE="predictions.csv"
+    # exp_list = ['base','base-lr','desc','ocr-pre','ocr-post','wce','bbox','bbox-segment','bbox-yolo','bbox-segment-yolo'] # GIT
 
     # MODEL='BLIP' # BLIP
     # PREDICTION_FILE="predictions.csv"
@@ -44,6 +44,7 @@ if __name__ == "__main__":
     op_dir = 'results-ddp/'  + SIZE + 'a'
 
     for EXP in exp_list:
+        ic(MODEL,EXP)
         #ic(EXP)
         
         results_dir = 'results-ddp/'  + SIZE + 'a/'+ EXP
@@ -87,7 +88,7 @@ if __name__ == "__main__":
                 if MODEL == 'LLaVA':
                     l = row['raw_prediction'].lower().split()
                 else:
-                    l = str(row['prediction']).split()
+                    l = str(row['prediction']).lower().split()
                     #ic(l)
 
                 for item in oodomain:

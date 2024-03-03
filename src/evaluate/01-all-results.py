@@ -10,7 +10,7 @@ RESULTS_DIR = '/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/results'
 if __name__ == "__main__":
 
 
-    MODELS = ['LLaVA'] # ,'GIT'] # ,'PIX']
+    MODELS = ['InstructBlip'] # ,'GIT'] # ,'PIX'],LLaVA'
     SIZE = '384'
 
     df = pd.DataFrame(columns=['qtype','precision','recall','fscore','average','size','model','model_category'])
@@ -21,6 +21,9 @@ if __name__ == "__main__":
         ROOT_DIR = '/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-' + model + '-hf/results-ddp/' + SIZE  + 'a'
 
         for f in os.listdir(ROOT_DIR):
+
+            if f=='.DS_Store'or f=='hallucination-scores.csv':
+                continue
             ic(f)
             model_df = pd.read_csv(os.path.join(ROOT_DIR,f,'summary_report.csv'))
             #ic(model_df.head(4))

@@ -10,9 +10,10 @@ import re
 import os 
 
 if __name__ == "__main__":
-    MODEL="LLaVA"
+    #MODEL="LLaVA"
+    MODEL='InstructBlip'
     PREDICTION_FILE="predictions-final.csv"
-    exp_list = ['bbox-segment']
+    exp_list = ['base','desc','ocr-pre','ocr-post','bbox','bbox-segment','bbox-yolo','bbox-segment-yolo'] 
 
     #MODEL='BLIP' # BLIP,GIT,PIX
     #MODEL='GIT'  # LLaVA
