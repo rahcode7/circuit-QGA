@@ -14,6 +14,9 @@ from tqdm import tqdm
 #python post-process.py --prediction_dir /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/results/llava/384a/base
 # python models-hf/cqa-llava/post-process.py --prediction_dir /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-LLaVa-hf/results-ddp/384a/bbox-segment  
 #python models-hf/cqa-llava/post-process.py --prediction_dir /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-LLaVa-hf/results-ddp/384a/bbox-segment-yolo
+#
+#python models-hf/gpt4v/post-process.py --prediction_dir /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-gpt4v-hf/results-ddp/384a/base  --exp_name base
+# python models-hf/gpt4v/post-process.py --prediction_dir /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-gpt4v-hf/results-ddp/384a/desc  --exp_name desc
 
 if __name__ == "__main__":
     start_time = time.time()
@@ -52,6 +55,12 @@ if __name__ == "__main__":
 
         answer,pred,qtype = row['answer'],row['prediction'],row['qtype']
         pred = re.sub(r'\W+', ' ',pred)
+        #ic(pred)
+
+        if pred == "":
+            df.at[j,'pred_final'] = ""
+            df.at[j,'pred_new'] = ""
+            continue
 
         if pred[-1] == ".":
             pred = pred[:-1]

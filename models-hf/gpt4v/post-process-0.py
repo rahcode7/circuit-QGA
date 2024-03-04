@@ -1,9 +1,11 @@
+import math
 import pandas as pd
 from icecream import ic 
 import ast
 import os 
 import argparse
 import glob
+from tqdm import tqdm 
 pd.set_option('display.max_columns', None)  # or 1000
 pd.set_option('display.max_rows', None)  # or 1000
 pd.set_option('display.max_colwidth', None)  # or 199
@@ -23,7 +25,9 @@ if __name__ == "__main__":
 
     # Read all 23 files and join them first
     #df = pd.DataFrame(columns=['ROWID','id','file','question','image_url','Result.OutputResult','Result','Tokens','TimeTaken'])
-    path = '/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-gpt4v-hf/results/384a/base-all' # use your path
+    #path = '/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-gpt4v-hf/results/384a/base-all' # use your path
+    path = '/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-gpt4v-hf/results-ddp/384a/desc-all'
+
     all_files = glob.glob(os.path.join(path , "*.tsv"))
     ic(all_files)
     li = []
@@ -33,6 +37,8 @@ if __name__ == "__main__":
     #ic(li)
     df = pd.concat(li, axis=0, ignore_index=True)
     ic(df.shape[0])
+    ic(df.info())
+    
 
     # for file in all_results:
     
@@ -40,15 +46,19 @@ if __name__ == "__main__":
     #pd.concat(df,df_small )
 
     df['prediction'] = ""
-    for i,rows in df.iterrows():
+    for i,rows in tqdm(df.iterrows(),total=df.shape[0]):
         res = rows['Result.OutputResult']
-        res = res[res.index("{"):res.index("}")+1]
-        #ic(res)
-        res_d = ast.literal_eval(res)
-        res = res[res.index("{"):res.index("}")]
-        res_d['prediction']
-
-        df.at[i,'prediction'] = res_d['prediction']
+        #ic(rows,res)
+        if isinstance(res,str):
+            res = res[res.index("{"):res.index("}")+1]
+            res_d = ast.literal_eval(res)
+            res = res[res.index("{"):res.index("}")]
+            res_d['prediction']
+            df.at[i,'prediction'] = res_d['prediction'] 
+        elif math.isnan(res):
+            df.at[i,'prediction'] = ""
+        else:
+            break
         #ic(res,res_d['prediction'])
 
     df= df[['id','file','question','prediction']]
@@ -69,7 +79,7 @@ if __name__ == "__main__":
     ic(df_all.head(10))
     
 
-    RESULTS_DIR="/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-gpt4v-hf/results/384a/base"
+    RESULTS_DIR="/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-gpt4v-hf/results-ddp/384a/desc"
     df_all.to_csv(os.path.join(RESULTS_DIR,'predictions.csv'), index=None) # , lines=True)
     df_all.to_json(os.path.join(RESULTS_DIR,'predictions.json'), orient='records', lines=True)
 

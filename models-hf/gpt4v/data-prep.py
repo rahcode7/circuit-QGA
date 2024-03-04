@@ -4,11 +4,39 @@
 # tab separated
 # How to measure for a new washing machine | Currys PC World  "chapter annotations\nchapter name: Intro\nvisual captions"  https://www.youtube.com/watch?v=dSUhX8JTC3I
 
-import json 
+import json
+import shutil 
 import pandas as pd 
 import os 
 from icecream import ic 
 import numpy as np
+import argparse
+
+ # Add desc to question 
+def desc(q,s,d):
+    #ic(q,s,d)
+    if d[-1]==".":
+        #return("The following question is about an electrical component : " + s + "  .It cab be described as follows: " +  d + " Now, please provide an answer to the given question. " + q)
+        return("Use the following description of the electrical component to answer the question: " +  d + " Now, respond to this question: " + q)
+    else:
+        return("Use the following description of the electrical component to answer the question: " +  d + ". Now, respond to this question: " + q)
+
+def ocr(q,o):
+    return("Use the following OCR output to answer the question: " +  o + ". Now, respond to this question: " + q)
+
+def bbox(q,b):
+    return("Use the following bounding box output comprising of the components and their coordinates in the image: " +  b + "Now, respond to this question: " + q)
+
+def bbox_segment(q,b):
+    return("Use the following bounding box output comprising of the components and their corresponding positions in the image : " +  b + "Now, respond to this question: " + q)
+
+#  python models-hf/gpt4v/data-prep.py --q_path datasets/questions/all/master_adv.json --op_path models-hf/gpt4v/datasets/ocr --exp_name ocr
+#  python models-hf/gpt4v/data-prep.py --q_path datasets/questions/all/master_adv_ocr.json --op_path models-hf/gpt4v/datasets/ocr-post --exp_name ocr-post
+#  python models-hf/gpt4v/data-prep.py --q_path datasets/questions/all/master_bbox.json --op_path models-hf/gpt4v/datasets/bbox --exp_name bbox
+#  python models-hf/gpt4v/data-prep.py --q_path datasets/questions/all/master_bbox_segment.json --op_path models-hf/gpt4v/datasets/bbox_segment --exp_name bbox_segment
+#  python models-hf/gpt4v/data-prep.py --q_path datasets/questions/all/master_bbox_yolo.json --op_path models-hf/gpt4v/datasets/bbox_yolo --exp_name bbox_yolo
+#  python models-hf/gpt4v/data-prep.py --q_path datasets/questions/all/master_bbox_segment_yolo.json --op_path models-hf/gpt4v/datasets/bbox_segment_yolo --exp_name bbox_segment_yolo
+
 
 if __name__ == "__main__":
 
@@ -16,43 +44,59 @@ if __name__ == "__main__":
     pd.set_option('display.max_rows', None)  # or 1000
     pd.set_option('display.max_colwidth', None)  # or 199
 
+    parser = argparse.ArgumentParser()
+    
+    parser.add_argument('--q_path', help='directory')
+    parser.add_argument('--op_path', help='directory')
+    parser.add_argument('--exp_name', help='directory')
+    
+    args = parser.parse_args()
+    EXP = args.exp_name 
 
+    #OP_PATH = "models-hf/gpt4v/datasets/desc"
     # Read master.json to get question,file for generation
 
-    Q_PATH = "datasets/questions/all"
-    OP_PATH = "gpt4v/datasets/"
-    FILE_NAME = "master.json"
-    df  =pd.read_json(os.path.join(Q_PATH,FILE_NAME))
-    df = df[df['splittype']=='test']
-    ic(df.head(2))
-    # create 23 datasets in format question image_url 
+    #Q_PATH = "datasets/questions/all" # 
+    Q_PATH = args.q_path
+    OP_PATH = args.op_path # "models-hf/gpt4v/datasets/desc"
 
-    # https://rahcode7.github.io/d1_258_png.rf.150231c3566da1bc9946f23678909d2a.jpg
-    #https://rahcode7.github.io/d4_part2_-8_png.rf.3dee55a06343bf2380802388bfda0abe.jpg
+    #FILE_NAME = "master_adv.json"
+    df = pd.read_json(Q_PATH)
+    df = df[df['splittype']=='test']
+
+    ic(df.head(2))
+    
+    if EXP == 'desc':   
+        #ic(df.desc.isna().sum())         
+        df['question'] = df.apply(lambda x : desc(x.question,x.symbol,x.desc) if x.desc is not None else x.question,axis=1)
+    elif EXP == 'ocr' or EXP == 'ocr-post':
+        df['question'] = df.apply(lambda x : ocr(x.question,x.ocr) if x.ocr!="" else x.question,axis=1)
+    elif EXP == 'bbox' or EXP == 'bbox_yolo':
+        df['question'] = df.apply(lambda x : bbox(x.question,x.bbox) if x.bbox!="" else x.question,axis=1)
+    elif EXP == 'bbox_segment' or EXP == 'bbox_segment_yolo':
+        df['question'] = df.apply(lambda x : bbox_segment(x.question,x.bbox_segment) if x.bbox_segment!="" else x.question,axis=1)
+    else: # BASE 
+        pass 
+
 
     df = df.reset_index()
-    ic(df.head(4))
+    #ic(df.head(4))
     df['id'] = df.index + 1
     df['image_url']  = df['file'].apply(lambda x: "https://rahcode7.github.io/"  + x + ".jpg")
-    print(df['image_url'].head(2))
-    ic(df.head(4))
+    #print(df['image_url'].head(2))
+    #ic(df.head(4))
 
     df = df[['id','file','question','image_url']]
 
-    ic(df['file'].nunique())
-    #df.to_csv(os.path.join(OP_PATH,"master.txt"), sep="\t",index=None)
-
-    # create chunks
-    # NUMBER_OF_SPLITS = 24
-
-    # size = 1000
-    # start = 0, end = 999
-    # for i in range(0,24):
-    #     df[start,end]
-    #     df.to_csv(os.path.join(OP_PATH,"master.txt"), sep="\t",index=None)
+    #ic(df['file'].nunique())
 
     NUMBER_OF_SPLITS = 24
+
+    if os.path.exists(OP_PATH):
+        shutil.rmtree(OP_PATH)
+    os.mkdir(OP_PATH)
     for i, new_df in enumerate(np.array_split(df,NUMBER_OF_SPLITS)):
         file_name = f"master{i}.txt"
+        ic(file_name)
         with open(os.path.join(OP_PATH,file_name),"w") as fo:
             fo.write(new_df.to_csv(sep="\t",index=None))

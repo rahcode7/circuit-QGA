@@ -15,9 +15,9 @@ import json
 
 if __name__ == "__main__":
     #MODEL="InstructBLIP" # 
-    MODEL='LLaVA'
+    MODEL='gpt4v'
     PREDICTION_FILE="predictions-final.csv"
-    exp_list = ['base','ocr-pre','ocr-post','desc','bbox','bbox-segment','bbox-yolo','bbox-segment-yolo']
+    #exp_list = ['base','ocr-pre','ocr-post','desc','bbox','bbox-segment','bbox-yolo','bbox-segment-yolo']
     exp_list = ['base']
     
     # MODEL='BLIP'  

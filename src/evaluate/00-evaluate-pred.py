@@ -11,17 +11,15 @@ import os
 
 if __name__ == "__main__":
     #MODEL="LLaVA"
-    MODEL='InstructBlip'
-    PREDICTION_FILE="predictions-final.csv"
-    exp_list = ['base','desc','ocr-pre','ocr-post','bbox','bbox-segment','bbox-yolo','bbox-segment-yolo'] 
+    # MODEL='InstructBlip'
+    # PREDICTION_FILE="predictions-final.csv"
+    # exp_list = ['base','desc','ocr-pre','ocr-post','bbox','bbox-segment','bbox-yolo','bbox-segment-yolo'] 
 
-    #MODEL='BLIP' # BLIP,GIT,PIX
-    #MODEL='GIT'  # LLaVA
-    # MODEL='PIX'
-    # PREDICTION_FILE="predictions.csv"
-    # exp_list = ['bbox-yolo']#,'bbox-segment-yolo']
-   
-   
+
+    MODEL='GPT4V'
+    PREDICTION_FILE="predictions-final.csv"
+    exp_list = ['desc'] # ,'desc','ocr-pre','ocr-post','bbox','bbox-segment','bbox-yolo','bbox-segment-yolo'] 
+
     ROOT_DIR = '/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-' + MODEL  + '-hf'
     SIZE = '384' # 576 
     
