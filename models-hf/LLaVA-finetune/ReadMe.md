@@ -3,16 +3,31 @@ sinteractive -c 20 -g 1
 conda activate cqa-base
 
 
-#### Step 0 
+#### Step 0 (If you don't have LLaVA)
+git clone https://github.com/haotian-liu/LLaVA.git
+cd LLaVA
+
+conda create -n llava python=3.10 -y
+conda activate llava
+pip install --upgrade pip  # enable PEP 660 support
+pip install -e .
+
+
+
+#### Step 1 (fine tuning codes and model weights)
 ```
 pip install deepspeed
 pip install flash-attn==2.3.3
-pip install torch-2.0.1
+pip install flash-attn --no-build-isolation
+
+# pip install torch-2.0.1
 
 
-cd LLaVA/llava
+
 git lfs install
-git clone https://huggingface.co/liuhaotian/llava-v1.5-7b
+git clone https://huggingface.co/liuhaotian/llava-v1.5-7b  # get weights
+git clone https://github.com/bdytx5/finetune_LLaVA.git # get code 
+cp LLaVA/scripts/zero2.json finetune_LLaVA/scripts/zero2.json 
 
 ```
 
@@ -26,10 +41,10 @@ cat runs/llava/llava-base.txt
 squeue -u $USER
 
 cp -r circuitQA ~/share1
-
+cp 
 
  -->
-#### Step 1 : Get instruction traiv/val datasets
+#### Step 2 : Get instruction traiv/val datasets
 
 
 ```
@@ -38,6 +53,7 @@ gdown https://drive.google.com/drive/folders/1GMrFlCBH7utOaP8zKsqZFchabisu0qdE -
 
 ```
 
+#### Step 3 : Script for finetuning
 ```
 MODEL='llava'
 CHECKPOINT="checkpoints-$MODEL-$EXP_NAME-$DATE"

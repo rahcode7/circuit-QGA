@@ -12,8 +12,7 @@ RULES
 2. Don't answer anything outside the scope of the question.
 3. Input images are either handwritten or schematic. 
 
-Question:  #question#
-Image URL: #image_url#
+Question:  #questionImage URL: #image_url#
 File: #file#
 id: #id#
 
