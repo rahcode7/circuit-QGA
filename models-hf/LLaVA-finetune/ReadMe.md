@@ -40,7 +40,7 @@ cp -r circuitQA ~/share1
 cp 
 
  -->
-#### Step 2 : Get instruction traiv/val datasets
+#### Step 2 : Get instruction train/val datasets
 
 
 ```
