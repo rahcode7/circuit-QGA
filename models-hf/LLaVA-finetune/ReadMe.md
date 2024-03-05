@@ -1,7 +1,3 @@
-ssh rahul.mehta@ada
-sinteractive -c 20 -g 1
-conda activate cqa-base
-
 
 #### Step 0 (If you don't have LLaVA)
 git clone https://github.com/haotian-liu/LLaVA.git
