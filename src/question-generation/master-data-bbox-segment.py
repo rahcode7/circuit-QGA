@@ -11,10 +11,10 @@ from PIL import Image
 tqdm.pandas()
 pd.options.mode.chained_assignment = None  # default='warn'
 
-DATA_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/"
-INPUT_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/model-inputs"
-CLASS_DICT = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/src/utils/class_dict.json"
-OUTPUT_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/all"
+DATA_PATH = "datasets/questions/"
+INPUT_PATH = "datasets/model-inputs"
+CLASS_DICT = "src/utils/class_dict.json"
+OUTPUT_PATH = "datasets/questions/all"
 
 
 if __name__ == "__main__":

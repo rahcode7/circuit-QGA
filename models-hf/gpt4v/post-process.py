@@ -10,13 +10,6 @@ import numpy
 from word2number import w2n
 from icecream import ic 
 from tqdm import tqdm 
-# commands 
-#python post-process.py --prediction_dir /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/results/llava/384a/base
-# python models-hf/cqa-llava/post-process.py --prediction_dir /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-LLaVa-hf/results-ddp/384a/bbox-segment  
-#python models-hf/cqa-llava/post-process.py --prediction_dir /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-LLaVa-hf/results-ddp/384a/bbox-segment-yolo
-#
-#python models-hf/gpt4v/post-process.py --prediction_dir /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-gpt4v-hf/results-ddp/384a/base  --exp_name base
-# python models-hf/gpt4v/post-process.py --prediction_dir /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-gpt4v-hf/results-ddp/384a/desc  --exp_name desc
 
 if __name__ == "__main__":
     start_time = time.time()
@@ -36,7 +29,7 @@ if __name__ == "__main__":
 
     # If desc, merge with base predictions 
     if EXP_NAME == 'desc':
-        df2 = pd.read_json('/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-LLaVa-hf/results-ddp/384a/base/predictions.json', lines=True)
+        df2 = pd.read_json('models-LLaVa-hf/results-ddp/384a/base/predictions.json', lines=True)
         df2 = df2[df2.qtype.isin(['position','value','junction'])]
         ic(df2['qtype'].value_counts())
         df = pd.concat([df,df2],ignore_index=True)
@@ -102,7 +95,7 @@ if __name__ == "__main__":
             df.at[j,'pred_new'] = pred_new
 
         elif qtype == 'position':
-            pred_final,pred_new = "",""
+            pred_final,pred_new,pred_new_list = "","",[]
 
             # search answer keyword in "is a {answer}"
             "The circuit symbol at the extreme top is a lightning bolt."
@@ -119,12 +112,13 @@ if __name__ == "__main__":
                         i = sl.index("is")
                         pred_new  = " ".join(sl[i+1:])
                         pred_new_list = sl[i+1:]
-            elif "represents" in sl:
-                i = sl.index("a")
-                if sl.index("represents") + 1 == sl.index("a"):
-                    pred_new  = " ".join(sl[i+1:])
-                    pred_new_list = sl[i+1:]
+            # elif "represents" in sl:
+            #     i = sl.index("a")
+            #     if sl.index("represents") + 1 == sl.index("a"):
+            #         pred_new  = " ".join(sl[i+1:])
+            #         pred_new_list = sl[i+1:]
             else:
+                
                 pass 
                 
             df.at[j,'pred_final'] = pred_final

@@ -2,7 +2,7 @@ import json
 
 
 d = {}
-with open("/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/raw/d2-kaggle/classes.json") as classes_file:
+with open("datasets/raw/d2-kaggle/classes.json") as classes_file:
     d = json.loads(classes_file.read())
 print(d)
 

@@ -14,9 +14,9 @@ import os
 from  utils.preprocessing  import xml_processor,starts_digit,cloud_value_bndbox,euclidean_distance,class_cleaner
 from pathlib import Path
 from icecream import ic 
-OUTPUT_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/value/"
-DATA_PATH  = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/"
-GOOGLE_PATH  = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/value/google-bbox"
+OUTPUT_PATH = "datasets/questions/value/"
+DATA_PATH  = "datasets/"
+GOOGLE_PATH  = "datasets/questions/value/google-bbox"
 
 cnt = 0 
 if __name__ == "__main__":

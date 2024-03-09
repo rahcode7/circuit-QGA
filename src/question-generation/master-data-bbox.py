@@ -8,10 +8,10 @@ from tqdm import tqdm
 import re
 tqdm.pandas()
 
-DATA_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/"
-BBOX_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/model-inputs/labels"
-CLASS_DICT = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/src/utils/class_dict.json"
-OUTPUT_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/all"
+DATA_PATH = "datasets/questions/"
+BBOX_PATH = "datasets/model-inputs/labels"
+CLASS_DICT = "src/utils/class_dict.json"
+OUTPUT_PATH = "datasets/questions/all"
 if __name__ == "__main__":
     df = pd.read_csv(DATA_PATH + "all/"+"master.csv")
 

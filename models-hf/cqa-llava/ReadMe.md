@@ -50,16 +50,13 @@ python models-hf/LLaVA/cqa-llava/eval-single.py --question_dir datasets/question
 --image_dir datasets/$DATASET_SIZE --results_dir datasets/results/$MODEL/$DATASET_SIZE/$EXP_NAME
 ```
 
-<!-- ### For ADA only
-
 
 SIZE='384a'
-export RESULTS_DIR_LLAVA=/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-llava/results/$SIZE
-export LOCAL_SCRIPTS=/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/circuit-QGA/models-hf
-export ADA='rahul.mehta@ada:circuitQA'
+export RESULTS_DIR_LLAVA=models-llava/results/$SIZE
+export LOCAL_SCRIPTS=models-hf
 
 
-scp -r $LOCAL_SCRIPTS/cqa-llava $ADA/LLaVA/cqa-llava
+scp -r $LOCAL_SCRIPTS/cqa-llava LLaVA/cqa-llava
 
 
 cd LLaVA
@@ -68,7 +65,7 @@ cp cqa-llava/eval/run_llava.py llava/model/run_llava.py
 
 
 conda activate llava
-sbatch LLaVA/cqa-llava/ada-script.sh
+sbatch LLaVA/cqa-llava/script.sh
 
 
 #SBATCH --output=runs/llava/llava-base.txt

@@ -10,11 +10,11 @@ import collections
 import ast
 #from utils.preprocessing import xml_processor,class_cleaner
 
-# yaml_path = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/raw/CGHD-supplement.v6i.yolov8/data.yaml"
-# data_path = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/master/"
-# output_path = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/"
-dataset_df = pd.read_csv("/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/processed/dataset.csv")
-op = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/src/utils"
+# yaml_path = "  datasets/raw/CGHD-supplement.v6i.yolov8/data.yaml"
+# data_path = "  datasets/master/"
+# output_path = "  datasets/"
+dataset_df = pd.read_csv("datasets/processed/dataset.csv")
+op = "src/utils"
 # for all yaml files 
 # with open(data_path + dataset + '/' + "data.yaml", 'r') as stream:
 #     yaml_dict  = yaml.safe_load(stream)

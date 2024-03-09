@@ -8,7 +8,7 @@ from pathlib import Path
 from icecream import ic 
 import numpy as np 
 
-DATA_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/"
+DATA_PATH = "datasets/questions/"
 
 if __name__ == "__main__":
 
@@ -53,11 +53,11 @@ if __name__ == "__main__":
         ic(val_df.shape)
 
     # Count complex LABELLED DATASET
-    complex_df = pd.read_csv("/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/count-complex/labelled/Q-count-complex-labelled-final.csv")
+    complex_df = pd.read_csv("datasets/questions/count-complex/labelled/Q-count-complex-labelled-final.csv")
 
 
     # Jnc based datasets
-    #/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/junction/Q-junction.csv
+    #datasets/questions/junction/Q-junction.csv
     jn_df = pd.read_csv(DATA_PATH + "/junction/Q-junction.csv")
 
     lst = [cnt_df,pos_df,val_df,jn_df,complex_df]

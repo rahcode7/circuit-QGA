@@ -4,8 +4,8 @@ import json
 from tqdm import tqdm 
 from icecream import ic
 
-DATA_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/master/"
-DUP_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/processed"
+DATA_PATH = "datasets/master/"
+DUP_PATH = "datasets/processed"
 
 
 

@@ -8,11 +8,11 @@
 
 
 # if __name__ == "__main__":
-#     qs_df = pd.read_csv("/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/count-complex/Q-count-complex.csv")
+#     qs_df = pd.read_csv("datasets/questions/count-complex/Q-count-complex.csv")
 #     ic(qs_df.info())
 
 
-#     with open('/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/others/duplicate_images.json', 'r') as f:
+#     with open(datasets/questions/others/duplicate_images.json', 'r') as f:
 #         dup_dict = json.load(f)
 
 #     #ic(dup_dict)
@@ -31,5 +31,5 @@
 #             qs_df['duplicateof'].iloc[i]  = []
         
 #     ic(qs_df.head(10))
-#     qs_df.to_csv("/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/count-complex/Q-count-complex-dup.csv",index=None)
+#     qs_df.to_csv(" datasets/questions/count-complex/Q-count-complex-dup.csv",index=None)
 

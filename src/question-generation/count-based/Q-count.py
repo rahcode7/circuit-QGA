@@ -19,9 +19,9 @@ classes = ['acv','arr','capacitor','ammeter','inductor','inductor2','resistor','
 
 if __name__ == "__main__":
 
-    #data_path = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/Circuit Recognition.v9i.yolov8"
-    data_path = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/"
-    q_path = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/count/"
+    #data_path = "datasets/Circuit Recognition.v9i.yolov8"
+    data_path = "datasets/"
+    q_path = "datasets/questions/count/"
 
     # Iterate train,test,dev 
     count_qlist= [] 

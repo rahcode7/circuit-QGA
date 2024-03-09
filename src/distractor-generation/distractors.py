@@ -13,7 +13,7 @@ from icecream import ic
 
 model = SentenceTransformer('all-MiniLM-L6-v2')
 
-OUTPUT_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/"
+OUTPUT_PATH = "datasets/questions/"
 
 # Top K answers candidates
 K=50
@@ -28,7 +28,7 @@ def sent_embeddings(sentence):
 
 if __name__ == "__main__":
 
-    Q_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/position/Q-position.csv"
+    Q_PATH = "  datasets/questions/position/Q-position.csv"
     main_df = pd.read_csv(Q_PATH)
     #print(main_df.head(10))
 
@@ -117,8 +117,8 @@ if __name__ == "__main__":
 
 
     # ##### Type 2  subset qs type
-    # #main_df = pd.read_csv("/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/questions-all.csv") # delete when master dataset
-    DATA_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/"
+    # #main_df = pd.read_csv("datasets/questions/questions-all.csv") # delete when master dataset
+    DATA_PATH = "datasets/questions/"
     
     q_count_type  = ['count'] # Add more Q types
 

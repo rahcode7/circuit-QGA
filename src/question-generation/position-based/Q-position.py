@@ -11,12 +11,12 @@ import ast
 from utils.preprocessing import xml_processor,randomize_qs,class_cleaner
 from utils.templates import symbol_position
 
-#IMAGE_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/train/images/img248_png.rf.1a79b5b566dfca51b0067d21ed0b4991.jpg"
-#XML_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/train/xml/img248_png.rf.1a79b5b566dfca51b0067d21ed0b4991.xml"
+#IMAGE_PATH = "datasets/train/images/img248_png.rf.1a79b5b566dfca51b0067d21ed0b4991.jpg"
+#XML_PATH = "datasets/train/xml/img248_png.rf.1a79b5b566dfca51b0067d21ed0b4991.xml"
 
 
-DATA_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/"
-OUTPUT_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/position"
+DATA_PATH = "datasets/"
+OUTPUT_PATH = "datasets/questions/position"
 
 if __name__ == "__main__":
     # Query bounding boxes 

@@ -9,8 +9,8 @@ import numpy as np
 import json 
 from utils.preprocessing import xml_processor,class_cleaner
 
-data_path = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/raw/"
-output_path = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/"
+data_path = "datasets/raw/"
+output_path = "datasets/"
   
 
 if __name__ == "__main__":
@@ -74,7 +74,7 @@ if __name__ == "__main__":
                         symbol_df = xml_processor(src)
                         symbol_df = class_cleaner(symbol_df,filename)
 
-                        with open("/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/raw/d2-kaggle/classes.json") as classes_file:
+                        with open("  datasets/raw/d2-kaggle/classes.json") as classes_file:
                             d = json.loads(classes_file.read())
                         class_list  = list(d.keys())
                         class_vals = list(d.values())
@@ -119,7 +119,7 @@ if __name__ == "__main__":
                         # print(src)
                         dest = f"{output_path}master/{s}/{internal_name}_{filename}"
                         src =  f"{data_path}{dataset}/{data_folder}/{s}/{filename}"
-                        #/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/raw/CGHD-supplement.v6i.yolov8/train/images
+                        #  datasets/raw/CGHD-supplement.v6i.yolov8/train/images
                         #os.rename(src,dest)
                         shutil.copy(src, dest)
                         #count_l+=1
@@ -135,7 +135,7 @@ if __name__ == "__main__":
                             # print(src)
                             src =  f"{data_path}{datasetsx[i]}/{data_folder}/{filename}"
                             #print(src)
-                            #/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/raw/CGHD-supplement.v6i.yolov8/train/images
+                            #  datasets/raw/CGHD-supplement.v6i.yolov8/train/images
                             #os.rename(src,dest)
                             shutil.copy(src, dest)
                             #count_x+=1

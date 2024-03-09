@@ -17,16 +17,19 @@ if __name__ == "__main__":
 
 
     MODEL='GPT4V'
+    SIZE = '384'
+    ROOT_DIR = 'models-' + MODEL  + '-hf'
     PREDICTION_FILE="predictions-final.csv"
-    exp_list = ['desc'] # ,'desc','ocr-pre','ocr-post','bbox','bbox-segment','bbox-yolo','bbox-segment-yolo'] 
-
-    ROOT_DIR = '/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-' + MODEL  + '-hf'
-    SIZE = '384' # 576 
+    #exp_list = #['base','desc'
+    #exp_list =  ['ocr','ocr-post','bbox_yolo','bbox_segment_yolo'] #'bbox','bbox-segment'
+    exp_list = ['bbox','bbox_segment']
+    # ROOT_DIR = '  models-' + MODEL  + '-hf'
+    # SIZE = '384' # 576 
     
 
     #SIZE = '576'
     # LLAVA
-    #ROOT_DIR = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/results/llava/384a/base"
+    #ROOT_DIR = "datasets/results/llava/384a/base"
 
 
     # EXP = '576base'
@@ -34,15 +37,16 @@ if __name__ == "__main__":
 
     #exp_list = ['base-lr','desc','ocr-pre','ocr-post','wce','bbox','bbox-segment','all'] # PIX
     #exp_list = ['base','base-lr','desc','ocr-pre','ocr-post','wce','bbox','bbox-segment','all'] # GIT
-    
-    # MODEL='BLIP'
+        
+    # MODEL='PIX'
     # PREDICTION_FILE="predictions.csv"
-    # exp_list = ['base','base-lr','desc','ocr-pre','ocr-post','wce','bbox','bbox-segment','all','bbox-yolo','bbox-segment-yolo'] # BLIP
-
+    # SIZE = '384'
+    # ROOT_DIR = 'models-' + MODEL  + '-hf'
+    # exp_list = ['bbox-segment-yolo'] # ,'base-lr','desc','ocr-pre','ocr-post','wce','bbox','bbox-segment','all','bbox-yolo','bbox-segment-yolo'] # BLIP
 
    
     for EXP in exp_list:
-
+        ic(EXP)
         results_dir = 'results-ddp/'  + SIZE + 'a/'+ EXP
         
         df = pd.read_csv(os.path.join((ROOT_DIR),results_dir,PREDICTION_FILE))

@@ -1,4 +1,5 @@
 import math
+import shutil
 import pandas as pd
 from icecream import ic 
 import ast
@@ -24,10 +25,8 @@ if __name__ == "__main__":
 
 
     # Read all 23 files and join them first
-    #df = pd.DataFrame(columns=['ROWID','id','file','question','image_url','Result.OutputResult','Result','Tokens','TimeTaken'])
-    #path = '/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-gpt4v-hf/results/384a/base-all' # use your path
-    path = '/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-gpt4v-hf/results-ddp/384a/desc-all'
-
+    path = RESULTS_DIR + '/' + EXP_NAME + '-all'
+   
     all_files = glob.glob(os.path.join(path , "*.tsv"))
     ic(all_files)
     li = []
@@ -38,12 +37,7 @@ if __name__ == "__main__":
     df = pd.concat(li, axis=0, ignore_index=True)
     ic(df.shape[0])
     ic(df.info())
-    
 
-    # for file in all_results:
-    
-    #df = pd.read_csv('/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-gpt4v-hf/results/202403011749217491.tsv', sep='\t', header=0)
-    #pd.concat(df,df_small )
 
     df['prediction'] = ""
     for i,rows in tqdm(df.iterrows(),total=df.shape[0]):
@@ -60,28 +54,38 @@ if __name__ == "__main__":
         else:
             break
         #ic(res,res_d['prediction'])
-
+    ic(df.head(3))
     df= df[['id','file','question','prediction']]
+    #ic(df.info())
     df['id']=df['id']-1
-    df.set_index('id',inplace=True)
+    #df.index = df['id'] 
+
+    #df.set_index('id',inplace=True)
     ic(df.head(3))
 
     # Combine with master.json
     Q_PATH = "datasets/questions/all"
     OP_PATH = "gpt4v/datasets/"
-    FILE_NAME = "master.json"
-    df_master  =pd.read_json(os.path.join(Q_PATH,FILE_NAME))
+    FILE_NAME = "master_bbox_segment.json"
+    df_master  = pd.read_json(os.path.join(Q_PATH,FILE_NAME))
     df_master = df_master[df_master['splittype']=='test'] # .reset_index()  
-    #ic(df_master)  
-    # df_master['id'] = df_master.index + 1
+    df_master = df_master.reset_index()
+    #df_master.index = df_master.index.values
+    ic(df_master.head(3)) 
 
-    df_all = pd.merge(df_master,df)
+    df_master['id'] = df_master.index + 1
+
+    df_all = pd.merge(df_master[['id','answer','qtype']],df,on=['id'])
     ic(df_all.head(10))
     
 
-    RESULTS_DIR="/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-gpt4v-hf/results-ddp/384a/desc"
-    df_all.to_csv(os.path.join(RESULTS_DIR,'predictions.csv'), index=None) # , lines=True)
-    df_all.to_json(os.path.join(RESULTS_DIR,'predictions.json'), orient='records', lines=True)
+    OP_PATH = RESULTS_DIR + '/' + EXP_NAME
+    if os.path.exists(OP_PATH):
+        shutil.rmtree(OP_PATH)
+        
+    os.mkdir(OP_PATH)
+    df_all.to_csv(os.path.join(OP_PATH,'predictions.csv'), index=None) # , lines=True)
+    df_all.to_json(os.path.join(OP_PATH,'predictions.json'), orient='records', lines=True)
 
 
 

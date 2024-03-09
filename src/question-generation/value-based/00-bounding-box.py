@@ -17,8 +17,8 @@ from  utils.preprocessing  import xml_processor,starts_digit,cloud_value_bndbox,
 from pathlib import Path
 from icecream import ic 
 
-OUTPUT_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/value/"
-DATA_PATH  = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/"
+OUTPUT_PATH = "datasets/questions/value/"
+DATA_PATH  = "datasets/"
 
 cnt = 0 
 if __name__ == "__main__":

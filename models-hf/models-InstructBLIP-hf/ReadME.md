@@ -101,8 +101,8 @@ python models-hf/models-InstructBLIP-hf/iblip-eval-single.py --question_dir data
 
 
 ### Step 2 Post process
-python /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/circuit-QGA/models-hf/models-InstructBLIP-hf/post-process.py --prediction_dir /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-InstructBLIP-hf/results-ddp/384a --exp_name base
-python /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/circuit-QGA/models-hf/models-InstructBLIP-hf/post-process.py --prediction_dir /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-InstructBLIP-hf/results-ddp/384a --exp_name desc
+python circuit-QGA/models-hf/models-InstructBLIP-hf/post-process.py --prediction_dir models-InstructBLIP-hf/results-ddp/384a --exp_name base
+python circuit-QGA/models-hf/models-InstructBLIP-hf/post-process.py --prediction_dir models-InstructBLIP-hf/results-ddp/384a --exp_name desc
 
 
 

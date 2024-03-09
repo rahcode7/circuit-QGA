@@ -30,12 +30,6 @@ def bbox(q,b):
 def bbox_segment(q,b):
     return("Use the following bounding box output comprising of the components and their corresponding positions in the image : " +  b + "Now, respond to this question: " + q)
 
-#  python models-hf/gpt4v/data-prep.py --q_path datasets/questions/all/master_adv.json --op_path models-hf/gpt4v/datasets/ocr --exp_name ocr
-#  python models-hf/gpt4v/data-prep.py --q_path datasets/questions/all/master_adv_ocr.json --op_path models-hf/gpt4v/datasets/ocr-post --exp_name ocr-post
-#  python models-hf/gpt4v/data-prep.py --q_path datasets/questions/all/master_bbox.json --op_path models-hf/gpt4v/datasets/bbox --exp_name bbox
-#  python models-hf/gpt4v/data-prep.py --q_path datasets/questions/all/master_bbox_segment.json --op_path models-hf/gpt4v/datasets/bbox_segment --exp_name bbox_segment
-#  python models-hf/gpt4v/data-prep.py --q_path datasets/questions/all/master_bbox_yolo.json --op_path models-hf/gpt4v/datasets/bbox_yolo --exp_name bbox_yolo
-#  python models-hf/gpt4v/data-prep.py --q_path datasets/questions/all/master_bbox_segment_yolo.json --op_path models-hf/gpt4v/datasets/bbox_segment_yolo --exp_name bbox_segment_yolo
 
 
 if __name__ == "__main__":
@@ -49,9 +43,11 @@ if __name__ == "__main__":
     parser.add_argument('--q_path', help='directory')
     parser.add_argument('--op_path', help='directory')
     parser.add_argument('--exp_name', help='directory')
+    parser.add_argument('--hosted_url', help='directory')
     
     args = parser.parse_args()
     EXP = args.exp_name 
+    URL = args.hosted_url
 
     #OP_PATH = "models-hf/gpt4v/datasets/desc"
     # Read master.json to get question,file for generation
@@ -82,7 +78,7 @@ if __name__ == "__main__":
     df = df.reset_index()
     #ic(df.head(4))
     df['id'] = df.index + 1
-    df['image_url']  = df['file'].apply(lambda x: "https://rahcode7.github.io/"  + x + ".jpg")
+    df['image_url']  = df['file'].apply(lambda x: URL + x + ".jpg")
     #print(df['image_url'].head(2))
     #ic(df.head(4))
 

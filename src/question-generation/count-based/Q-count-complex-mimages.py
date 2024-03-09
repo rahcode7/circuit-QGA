@@ -3,12 +3,12 @@ import os
 import shutil
 from icecream import ic
 
-INPUT_PATH_MAIN = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/count-complex/"
+INPUT_PATH_MAIN = "datasets/questions/count-complex/"
 INPUT_FILE = INPUT_PATH_MAIN+ '/Q-count-complex.csv'
 
-MASTER_IMAGE_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/"
+MASTER_IMAGE_PATH = "datasets/"
 
-OUTPUT_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/model-inputs/"
+OUTPUT_PATH = "datasets/model-inputs/"
 
 if __name__ == "__main__":
     ip_datasets = ['train','test','dev']

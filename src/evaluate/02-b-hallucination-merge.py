@@ -6,14 +6,14 @@ if __name__ == "__main__":
     MODELS =["LLaVA","BLIP","GIT","PIX","InstructBLIP"] #,"GPT4V"]  
     SIZE='384'
 
-    RESULTS_DIR = '/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/results'
+    RESULTS_DIR = 'datasets/results'
 
     df = pd.DataFrame(columns=['exp-name','hs-vqa','hs-count','hs-oodomain','hs-idomain','model'])
 
     for model in MODELS:
         ic(model)
-        # ROOT_DIR = '/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-' + model + '-hf/results-ddp/384a/'
-        ROOT_DIR = '/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-' + model + '-hf/results-ddp/' + SIZE  + 'a'
+        # ROOT_DIR = 'models-' + model + '-hf/results-ddp/384a/'
+        ROOT_DIR = 'models-' + model + '-hf/results-ddp/' + SIZE  + 'a'
 
         model_df = pd.read_csv(os.path.join(ROOT_DIR,"hallucination-scores.csv"))
         #df['model'] = model 

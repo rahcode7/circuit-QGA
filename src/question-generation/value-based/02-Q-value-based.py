@@ -14,9 +14,9 @@ from icecream import ic
 
 #  class_dict = {'acv':'acv','arr':'arr','c':'capacitor','i':'ammeter','i':'inductor','l':'inductor2','r':'resistor','v':'voltmeter'}
 
-DATA_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/value/dist-bbox/all/"
-OUTPUT_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/value/"
-MAIN_DATA_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/"
+DATA_PATH = "datasets/questions/value/dist-bbox/all/"
+OUTPUT_PATH = "datasets/questions/value/"
+MAIN_DATA_PATH = "datasets/"
 
 # Pull directly from main data
 if __name__ == "__main__":
@@ -68,8 +68,8 @@ if __name__ == "__main__":
    qs_all_df.to_csv(OUTPUT_PATH + 'Q-value-new.csv',index=None)
 
 
-#DATA_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/value/dist-bbox/"
-#OUTPUT_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/value/"
+#DATA_PATH = "datasets/questions/value/dist-bbox/"
+#OUTPUT_PATH = "datasets/questions/value/"
 # if __name__ == "__main__":
 #    qlist_all = []
 #    qs_all_df = pd.DataFrame(columns =['splittype','file', 'question', 'answer','qtype'])

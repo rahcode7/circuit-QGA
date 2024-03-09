@@ -26,8 +26,8 @@ def random_split(X,split_size):
 
 if __name__ == "__main__":
 
-   data_path = '/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/master/'
-   mid_path = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/processed/"
+   data_path = 'datasets/master/'
+   mid_path = "datasets/processed/"
    # Add images to list
    X = []
    for file in os.listdir(os.path.join(data_path,'images/')):
@@ -64,7 +64,7 @@ if __name__ == "__main__":
    ic(list(set(test).intersection(dev)))
 
    #Create files for train
-   output_path  =  "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/"
+   output_path  =  "datasets/"
    
 
    # Prepare train test dev folders with images and txt from master dataset using the above split

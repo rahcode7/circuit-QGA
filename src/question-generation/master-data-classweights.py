@@ -11,7 +11,7 @@ from transformers import BertTokenizer
 from collections import Counter
 tqdm.pandas()
 
-DATA_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/"
+DATA_PATH = "datasets/questions/"
 
 if __name__ == "__main__":
     # Qs
@@ -29,7 +29,7 @@ if __name__ == "__main__":
     ic(tokenizer.vocab_size)
     t5_vocab = tokenizer.get_vocab()
 
-    with open('/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/all/t5_vocab.json','w') as fp:
+    with open('datasets/questions/all/t5_vocab.json','w') as fp:
         json.dump(t5_vocab,fp)
         
     ic(tokenizer.sep_token_id)
@@ -43,7 +43,7 @@ if __name__ == "__main__":
     #labels = processor(text=answer_df['answer'], return_tensors="pt", padding=True).input_ids
     
     answer_df['tokens'] = answer_df['answer'].progress_apply(lambda x : processor(text=str(x), padding=True).input_ids)  #.input_ids[:,1:][0].tolist())
-    answer_df.to_csv("/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/all/answer_tokens-pix.csv",index=None)
+    answer_df.to_csv("datasets/questions/all/answer_tokens-pix.csv",index=None)
     ic(answer_df.head(5))
 
     token_counter = Counter()
@@ -57,7 +57,7 @@ if __name__ == "__main__":
     tc  = dict(Counter(token_counter))
     
 
-    with open('/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/all/token_counter-pix.json', 'w') as fp:
+    with open('datasets/questions/all/token_counter-pix.json', 'w') as fp:
         json.dump(tc, fp)
 
     ic(token_counter)
@@ -93,7 +93,7 @@ if __name__ == "__main__":
 
     #d = pd.Series(answer_df.weights.values,index=answer_df.tokens).to_dict()
     # ic(d)
-    with open('/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/all/class_weights-pix.json', 'w') as fp:
+    with open('datasets/questions/all/class_weights-pix.json', 'w') as fp:
         json.dump(class_weights, fp)
 
 

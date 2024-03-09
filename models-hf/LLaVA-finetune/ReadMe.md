@@ -27,31 +27,22 @@ cp LLaVA/scripts/zero2.json finetune_LLaVA/scripts/zero2.json
 
 ```
 
-<!-- scp -r /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/circuit-QGA/models-hf/LLaVA-finetune/ada-script-llava.sh rahul.mehta@ada:circuitQA/models-hf/
-scp -r /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/circuit-QGA/models-hf/LLaVA-finetune/train.py rahul.mehta@ada:circuitQA/LLaVA/llava/train/train.py
-scp -r /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/circuit-QGA/models-hf/LLaVA-finetune/train_mem.py rahul.mehta@ada:circuitQA/LLaVA/llava/train/train_mem.py
-scp -r /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/others/git-lfs-linux-amd64-v2.9.0.tar.gz rahul.mehta@ada
-
-sbatch models-hf/ada-script-llava.sh 
-cat runs/llava/llava-base.txt 
-squeue -u $USER
-
-cp -r circuitQA ~/share1
-cp 
-
  -->
 #### Step 2 : Get instruction train/val datasets
 
 
 ```
 pip install gdown==v4.6.0   # upgrade to latest version
-gdown https://drive.google.com/drive/folders/1GMrFlCBH7utOaP8zKsqZFchabisu0qdE -O datasets-llava --folder
+mkdir datasets/llava
+gdown https://drive.google.com/drive/folders/1GMrFlCBH7utOaP8zKsqZFchabisu0qdE -O datasets/llava --folder
 
 ```
 
 #### Step 3 : Script for finetuning
 ```
 MODEL='llava'
+EXP_NAME='base'
+DATE='5Mar'
 CHECKPOINT="checkpoints-$MODEL-$EXP_NAME-$DATE"
 mkdir $CHECKPOINT
 export CUDA_VISIBLE_DEVICES=0

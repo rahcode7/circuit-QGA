@@ -12,8 +12,8 @@ from pathlib import Path
 def class_map_dataset():
 
     output  = "labels-final"
-    class_mapping_file = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/src/utils/class_mappings.json"
-    data_path = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/master"
+    class_mapping_file = "src/utils/class_mappings.json"
+    data_path = "datasets/master"
 
     class_dict = json.load(open(class_mapping_file))
 
@@ -152,8 +152,8 @@ if __name__ == "__main__":
     # Create updated txt files with updated class mappings
     class_map_dataset()
     
-    split_path = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/model-inputs"
-    src_path = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/master"
+    split_path = "datasets/model-inputs"
+    src_path = "datasets/master"
     
     copy_master_splits(split_path,src_path)
 

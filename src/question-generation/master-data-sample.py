@@ -8,7 +8,7 @@ import json
 import random 
 
 
-DATA_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/"
+DATA_PATH = "datasets/questions/"
 SAMPLES = 400
 
 

@@ -18,15 +18,15 @@ if __name__ == "__main__":
     MODEL='gpt4v'
     PREDICTION_FILE="predictions-final.csv"
     #exp_list = ['base','ocr-pre','ocr-post','desc','bbox','bbox-segment','bbox-yolo','bbox-segment-yolo']
-    exp_list = ['base']
-    
+    #exp_list = ['ocr','ocr-post','bbox_yolo','bbox_segment_yolo',
+    exp_list = ['bbox','bbox_segment']
     # MODEL='BLIP'  
     # PREDICTION_FILE="predictions.csv"
     # exp_list = ['base','base-lr','desc','ocr-pre','ocr-post','wce','bbox','bbox-segment','bbox-yolo','bbox-segment-yolo'] # BLIP
 
     # MODEL='PIX' 
     # PREDICTION_FILE="predictions.csv"
-    # exp_list = ['base-lr','desc','ocr-pre','ocr-post','wce','bbox','bbox-segment','bbox-yolo']
+    # exp_list = ['bbox-segment-yolo'] #,'desc','ocr-pre','ocr-post','wce','bbox','bbox-segment','bbox-yolo']
 
     # MODEL='GIT'  
     # PREDICTION_FILE="predictions.csv"
@@ -37,7 +37,7 @@ if __name__ == "__main__":
     # exp_list = ['base-lr','desc','ocr-pre','ocr-post','wce','bbox','bbox-segment','all','bbox-yolo','bbox-segment-yolo'] # BLIP
 
 
-    ROOT_DIR = '/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-' + MODEL  + '-hf'
+    ROOT_DIR = 'models-' + MODEL  + '-hf'
     SIZE = '384' # 576 
     
     hs_vqa_list,hs_cnt_list,hs_ood_list,hs_id_list = [],[],[],[]

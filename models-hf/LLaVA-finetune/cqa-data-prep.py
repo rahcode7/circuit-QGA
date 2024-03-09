@@ -10,8 +10,8 @@ if __name__ == "__main__":
 
     # Load train,test or dev 
     datasets = ['train','val']
-    output_folder = '/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/LLaVA/LLaVA-finetune/dataset-cqa'
-    QUESTIONS_PATH = '/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/all/master.json'
+    output_folder = 'LLaVA/LLaVA-finetune/dataset-cqa'
+    QUESTIONS_PATH = 'datasets/questions/all/master.json'
     main_df = pd.read_json(QUESTIONS_PATH)
     ic(main_df.head(5))
 

@@ -28,8 +28,8 @@ from icecream import ic
 
 np.set_printoptions(sys.maxsize)
 
-INPUT_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/"
-OUTPUT_PATH_MAIN = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/count-complex/"
+INPUT_PATH = "datasets/"
+OUTPUT_PATH_MAIN = "datasets/questions/count-complex/"
 
 OUTPUT_FILE = OUTPUT_PATH_MAIN + '/Q-count-complex.csv'
 MAX_SAMPLES_PER_Q = 6

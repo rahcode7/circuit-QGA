@@ -25,18 +25,18 @@ np.set_printoptions(sys.maxsize)
 
 
 
-#IMAGE_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/train/images/d1_254_png.rf.0b2e9377b97914d428d85e23cbf099b1.jpg"
-#XML_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/train/xml/d1_254_png.rf.0b2e9377b97914d428d85e23cbf099b1.xml"
+#IMAGE_PATH = "datasets/train/images/d1_254_png.rf.0b2e9377b97914d428d85e23cbf099b1.jpg"
+#XML_PATH = "datasets/train/xml/d1_254_png.rf.0b2e9377b97914d428d85e23cbf099b1.xml"
 
-IMAGE_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/train/images/d1_autockt_-66_png.rf.a30811b86284a145cd9ed227d824e5c1.jpg"
-XML_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/train/xml/d1_autockt_-66_png.rf.a30811b86284a145cd9ed227d824e5c1.xml"
+IMAGE_PATH = "datasets/train/images/d1_autockt_-66_png.rf.a30811b86284a145cd9ed227d824e5c1.jpg"
+XML_PATH = "datasets/train/xml/d1_autockt_-66_png.rf.a30811b86284a145cd9ed227d824e5c1.xml"
 
-#IMAGE_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/train/images/d5_IMG_20220810_193854_jpg.rf.a2d16599be5d3788ddf63b7c9ceabb57.jpg"
-#XML_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/train/xml/d5_IMG_20220810_193854_jpg.rf.a2d16599be5d3788ddf63b7c9ceabb57.xml"
+#IMAGE_PATH = "datasets/train/images/d5_IMG_20220810_193854_jpg.rf.a2d16599be5d3788ddf63b7c9ceabb57.jpg"
+#XML_PATH = "datasets/train/xml/d5_IMG_20220810_193854_jpg.rf.a2d16599be5d3788ddf63b7c9ceabb57.xml"
 
 
-DATA_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/"
-OUTPUT_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/position"
+DATA_PATH = "datasets/"
+OUTPUT_PATH = "datasets/questions/position"
 
 
 if __name__ == "__main__":

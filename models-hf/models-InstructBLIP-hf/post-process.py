@@ -10,17 +10,6 @@ import numpy
 from word2number import w2n
 from icecream import ic 
 from tqdm import tqdm 
-# commands 
-#python post-process.py --prediction_dir /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/results/llava/384a/base
-#python models-hf/models-InstructBLIP-hf/post-process.py --prediction_dir /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-InstructBLIP-hf/results-ddp/384a --model InstructBLIP --exp_name base
-#python models-hf/models-InstructBLIP-hf/post-process.py --prediction_dir /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-InstructBLIP-hf/results-ddp/384a --model InstructBLIP --exp_name bbox
-# python models-hf/models-InstructBLIP-hf/post-process.py --prediction_dir /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-InstructBLIP-hf/results-ddp/384a --model InstructBLIP --exp_name ocr-post
-# python models-hf/models-InstructBLIP-hf/post-process.py --prediction_dir /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-InstructBLIP-hf/results-ddp/384a --model InstructBLIP --exp_name ocr-pre
-# python models-hf/models-InstructBLIP-hf/post-process.py --prediction_dir /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-InstructBLIP-hf/results-ddp/384a --model InstructBLIP --exp_name desc
-
-# python models-hf/models-InstructBLIP-hf/post-process.py --prediction_dir /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-InstructBLIP-hf/results-ddp/384a --model InstructBLIP --exp_name bbox-segment
-# python models-hf/models-InstructBLIP-hf/post-process.py --prediction_dir /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-InstructBLIP-hf/results-ddp/384a --model InstructBLIP --exp_name bbox-yolo
-# python models-hf/models-InstructBLIP-hf/post-process.py --prediction_dir /Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-InstructBLIP-hf/results-ddp/384a --model InstructBLIP --exp_name bbox-segment-yolo
 
 if __name__ == "__main__":
     start_time = time.time()
@@ -41,13 +30,6 @@ if __name__ == "__main__":
     df = pd.read_json(input_file, lines=True)
     print(df.head(4))
 
-    # If desc, merge with base predictions 
-    # if EXP_NAME == 'desc':
-    #     df2 = pd.read_json('/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-LLaVa-hf/results-ddp/384a/base/predictions.json', lines=True)
-    #     df2 = df2[df2.qtype.isin(['position','value','junction'])]
-    #     ic(df2['qtype'].value_counts())
-    #     df = pd.concat([df,df2],ignore_index=True)
-    # ic(df.shape)
 
     p = inflect.engine()
 

@@ -147,12 +147,12 @@ def find_answer_class(question,answer_classes):
 if __name__ == "__main__":
 
     # Get labelled data
-    df = pd.read_csv("/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/value/Q-value-labelled.csv")   
+    df = pd.read_csv("datasets/questions/value/Q-value-labelled.csv")   
     ic(df.head(4))
 
     # subset non empty
     df = df[~df['answer_label'].isna()]
-    df.to_csv("/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/value/Q-value-labelled-processed.csv",index=None)
+    df.to_csv("datasets/questions/value/Q-value-labelled-processed.csv",index=None)
     print(df.shape)
 
     print(df['answer_label'].values)
@@ -162,7 +162,7 @@ if __name__ == "__main__":
 
 
     # Read Questions file 
-    val_df = pd.read_csv("/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/value/Q-value.csv")
+    val_df = pd.read_csv("datasets/questions/value/Q-value.csv")
     #ic(val_df.columns)
 
     # Add answer class col
@@ -202,4 +202,4 @@ if __name__ == "__main__":
             #main_df.iloc[i,df.columns.get_loc('answer_label_f')] = answer_label_f 
             main_df.at[i,'answer_label_f'] = answer_label_f
 
-    main_df.to_csv("/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/value/Q-value-labelled-final.csv",index=None)
+    main_df.to_csv("datasets/questions/value/Q-value-labelled-final.csv",index=None)

@@ -3,12 +3,12 @@ from icecream import ic
 import os 
 
 
-#IMAGE_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/model-inputs/train/d1_251_png.rf.8361fa86a1f73533c98702783fde724e.jpg"
-MAIN_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/model-inputs-jn/val/"
-OUTPUT_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/576a/model-inputs-jn/val/"
+IMAGE_PATH = "datasets/model-inputs/train/d1_251_png.rf.8361fa86a1f73533c98702783fde724e.jpg"
+MAIN_PATH = "datasets/model-inputs-jn/val/"
+OUTPUT_PATH = "datasets/576a/model-inputs-jn/val/"
 
 
-with Image.open(IMAGE_PATH ) as image:
+with Image.open(IMAGE_PATH) as image:
     width, height = image.size
     ic(width,height)
 

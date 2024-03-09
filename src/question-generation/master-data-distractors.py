@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 from icecream import ic 
 
-DATA_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/"
+DATA_PATH = "datasets/questions/"
 
 
 

@@ -7,8 +7,8 @@ import json
 from tqdm import tqdm 
 from icecream import ic
 
-DATA_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/master/"
-OUTPUT_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/processed"
+DATA_PATH = "datasets/master/"
+OUTPUT_PATH = "datasets/processed"
 
 if __name__ == '__main__':
     phasher = PHash()

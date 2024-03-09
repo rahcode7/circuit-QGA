@@ -4,21 +4,22 @@ import os
 
 
 
-RESULTS_DIR = '/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/results'
+RESULTS_DIR = 'datasets/results'
 
 # Combine all 384
 if __name__ == "__main__":
 
 
-    MODELS = ['InstructBlip'] # ,'GIT'] # ,'PIX'],LLaVA'
+    #MODELS = ['InstructBlip'] # ,'GIT'] # ,'PIX'],LLaVA'
+    MODELS = ''
     SIZE = '384'
 
     df = pd.DataFrame(columns=['qtype','precision','recall','fscore','average','size','model','model_category'])
 
     for model in MODELS:
         ic(model)
-        # ROOT_DIR = '/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-' + model + '-hf/results-ddp/384a/'
-        ROOT_DIR = '/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-' + model + '-hf/results-ddp/' + SIZE  + 'a'
+        # ROOT_DIR = 'models-' + model + '-hf/results-ddp/384a/'
+        ROOT_DIR = 'models-' + model + '-hf/results-ddp/' + SIZE  + 'a'
 
         for f in os.listdir(ROOT_DIR):
 

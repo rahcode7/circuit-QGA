@@ -9,7 +9,7 @@ import re
 tqdm.pandas()
 
 
-DATA_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/"
+DATA_PATH = "datasets/questions/"
 
 def get_desc(q,symbol_desc):
     q = re.split(r'[?\s]\s*?',q)
@@ -77,7 +77,7 @@ if __name__ == "__main__":
     ######################### Add OCR inputs from GOOGLE VISION 
     
 
-    GOOGLE_FILE_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/value/google-bbox/all"
+    GOOGLE_FILE_PATH = "datasets/questions/value/google-bbox/all"
 
     # For each image,check in dir and if it exists open and get 1st column c, all values, append as a a list in the df['ocr_vals'] column
     df['ocr'] = ""

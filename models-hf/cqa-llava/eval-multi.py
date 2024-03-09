@@ -8,27 +8,6 @@ from tqdm import tqdm
 import time 
 import argparse
 
-## SINGLE IMAGE TESTING
-# prompt = "Context is objects detected are resistor,resistor. Now answer How many transistors are in the image? How many resistors are in the image ? How many resistors are connected to each other.  Answer in few words and in format Answer 1 and Answer 2 and Answer 3"
-
-# image_file = "https://rahcode7.github.io/docs/assets/images/251_png.rf.8361fa86a1f73533c98702783fde724e.jpg"
-# #image_file = ["https://rahcode7.github.io/docs/assets/images/251_png.rf.8361fa86a1f73533c98702783fde724e.jpg","https://rahcode7.github.io/docs/assets/images/252_png.rf.cacf030ad15d2af69b415a0963c8ac1b.jpg"]
-# args = type('Args', (), {
-#     "model_path": model_path,
-#     "model_base": None,
-#     "model_name": get_model_name_from_path(model_path),
-#     "query": prompt,
-#     "conv_mode": None,
-#     "image_file": image_file,
-#     "sep": ",",
-#     "temperature": 0,
-#     "top_p": None,
-#     "num_beams": 1,
-#     "max_new_tokens": 512
-# })()
-
-# eval_model(args)
-
 
 
 #### Code 2
@@ -42,12 +21,6 @@ tokenizer, model, image_processor, context_len = load_pretrained_model(
 
 if __name__ == "__main__":
     start_time = time.time()
-
-    # QUESTIONS_PATH = os.path.join("/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/all")
-    # IMAGE_DIR = ("/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/384a/model-inputs/test")
-    # FILE_NAME = "master.json"
-    # OUTPUT_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/models-llava/LLaVA/results"
-    # OUTPUT_FOLDER = "base"
     
     parser = argparse.ArgumentParser()
     

@@ -45,8 +45,8 @@ def class_cleaner(df,file):
 
 if __name__ == "__main__":
 
-    INPUT_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/model-inputs"
-    OUTPUT_PATH_MAIN = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/junction/"
+    INPUT_PATH = "datasets/model-inputs"
+    OUTPUT_PATH_MAIN = "datasets/questions/junction/"
     OUTPUT_FILE = OUTPUT_PATH_MAIN + 'Q-junction.csv'
 
     if os.path.exists(os.path.join(OUTPUT_FILE)):

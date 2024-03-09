@@ -9,7 +9,7 @@ from icecream import ic
 import numpy as np 
 import json
 
-DATA_PATH = "/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/questions/"
+DATA_PATH = "datasets/questions/"
 
 if __name__ == "__main__":
     # Qs
@@ -19,7 +19,7 @@ if __name__ == "__main__":
     ic(df.groupby(['splittype'])['file'].nunique())
 
     # Check near dups in master Qs and count splits 
-    with open("/Users/rahulmehta/Desktop/MSIIIT/QGen-circuits/datasets/processed/duplicate_unique_1.json") as f:
+    with open("datasets/processed/duplicate_unique_1.json") as f:
         dups = json.load(f)
 
 
