@@ -1,32 +1,59 @@
 
-# Section 1: Dataset Preparation Guide
+## Section 1: Dataset Preparation Guide
 
 
+### 1. Prepare master dataset of images and metadata
+##### Step 1 Unify all 5 datasets
+python src/data-prep/02-data-prep-master.py 
 
 
+##### Step 2 Identify and remove duplicate images 
+python src/data-prep/03-duplicate-identify.py 
+python src/data-prep/03-duplicate-remove.py
+
+##### Step 3 Split datasets
+python src/data-prep/04-split-dataset.py
+
+##### Step 4 Map classes
+python src/data-prep/05-class-mapping.py
+
+### 2. Prepare Questions-Answers for various question types
+##### Prepare count based questions
+python src/question-generation/count-based/Q-count.py
+
+##### Prepare spatial count based questions
+python src/question-generation/count-based/Q-count-complex.py
+
+##### Prepare junction based questions
+python src/question-generation/junction-based/Q-junction.py
+
+##### Prepare position based questions
+python src/question-generation/junction-based/Q-position.py
+
+##### Prepare value based questions
+python src/question-generation/value-based/00-bounding-box.py
+python src/question-generation/value-based/01-dist-calc.py
+python src/question-generation/value-based/02-Q-value-based.py
+
+### 3. Prepare master VQA datasets
+##### Prepare master VQA dataset
+python src/question-generation/master-data.py
+
+##### Prepare master VQA dataset for OCR and Description experiments
+python src/question-generation/master-data-desc-ocr.py
+
+##### Prepare master VQA dataset for Bounindg box experiments
+python src/question-generation/master-data-bbox.py
+
+##### Prepare master VQA dataset for Bounindg box segments experiments
+python src/question-generation/master-data-bbox-segment.py
+
+##### Prepare class weights for weighted cross entropy experiments
+python src/question-generation/master-data-classweights.py
 
 
+## Section 2 : Run Generative - Fine tuning and instruction tuned models 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Section 2 : Run Generative - Fine tuning and instruction tuned models 
-
-
-
-### BLIP Model 
 
 #### Install conda environment
 ```
@@ -54,21 +81,6 @@ rm model-inputs.tar model-inputs-jn.tar
 ```
 
 ## Download images and questions
-
-#### Images Resized (576)
-```
-gdown https://drive.google.com/uc\?id\=10nq-bjxAKt_szWEe8FeaM4k3lVA3rie3
-tar -xvf 576.tar -C datasets
-rm 576.tar
-```
-
-#### Images Resized (576a)
-```
-gdown https://drive.google.com/uc\?id\=19_12tIf0kKDdRO43XPj7BgyqmEwZp5NG
-tar -xvf 576a.tar -C datasets
-rm 576a.tar
-```
-
 #### Images Resized (384a)
 ```
 gdown https://drive.google.com/uc\?id\=1WXo-LLTmVO6iDAJK45TYsyVm07JIgTF-
@@ -103,459 +115,9 @@ gdown https://drive.google.com/uc\?id\=15mUNd15FokT9Y81dAOHW2qp_h7kbxZhD
 ```
 pip install bitsandbytes scipy accelerate
 ```
+### Fine Tuned generative models 
 
-
-##  BLIP (Distributed) - 576 
-##### Experiment 1. base + lr 
-
-```
-MODEL='blip'  # git,blip
-MACHINE_TYPE='ddp' # ddp or dp or cpu
-EXP_NAME='base-lr' # 
-RUN_TYPE='train' # train,inference
-DATE='6Jan'
-SIZE='576'
-CHECKPOINT="checkpoints-$MODEL-$MACHINE_TYPE-$EXP_NAME-$SIZE-$DATE"
-DATASET_SIZE='576a'
-NUM_GPUS=4
-
-rm -rf $CHECKPOINT
-mkdir $CHECKPOINT
-
-export NUM_NODES=1
-export EPOCHS=10
-export LOCAL_RANK=0
-export CUDA_VISIBLE_DEVICES=0,1,2,3 # Set your gpu ids 
-
-accelerate launch --multi_gpu --num_processes=$NUM_GPUS models-hf/$MODEL-vqa-train-$MACHINE_TYPE.py --num_epochs $EPOCHS --train_batch_size 8 --val_batch_size 8  --train_dir datasets/$DATASET_SIZE \
---val_dir datasets/$DATASET_SIZE  --checkpoint_dir  $CHECKPOINT  --learning_rate 1e-5 \
---question_dir datasets/questions/all/master.json   --experiment_name ms-$MODEL-$EXP_NAME  \
---ngpus $NUM_GPUS --machine_type $MACHINE_TYPE --wandb_status online --image_size 576 --accumulation_steps 4 --wce 0 --lr 1
-
-```
-
-##### Experiment 2. wce + ocr-pre
-
-```
-MODEL='blip'  # git,blip
-MACHINE_TYPE='ddp' # ddp or dp or cpu
-EXP_NAME='ocr-pre' # 
-RUN_TYPE='train' # train,inference
-DATE='8Jan'
-SIZE='576'
-CHECKPOINT="checkpoints-$MODEL-$MACHINE_TYPE-$EXP_NAME-$SIZE-$DATE"
-DATASET_SIZE='576a'
-NUM_GPUS=4
-
-rm -rf $CHECKPOINT
-mkdir $CHECKPOINT
-
-export NUM_NODES=1
-export EPOCHS=10
-export LOCAL_RANK=0
-export CUDA_VISIBLE_DEVICES=0,1,2,3 # Set your gpu ids 
-
-accelerate launch --multi_gpu --num_processes=$NUM_GPUS models-hf/$MODEL-vqa-train-$MACHINE_TYPE.py --num_epochs $EPOCHS --train_batch_size 8 --val_batch_size 8  --train_dir datasets/$DATASET_SIZE \
---val_dir datasets/$DATASET_SIZE  --checkpoint_dir  $CHECKPOINT  \
---question_dir datasets/questions/all/master_adv.json  --experiment_name ms-$MODEL-$EXP_NAME  \
---ngpus $NUM_GPUS --machine_type $MACHINE_TYPE --wandb_status online --image_size 576 --accumulation_steps 4 --wce 1 --ocr 1
-
-```
-
-##### Experiment 3. wce + ocr-post
-
-```
-MODEL='blip'  # git,blip
-MACHINE_TYPE='ddp' # ddp or dp or cpu
-EXP_NAME='ocr-post' # 
-RUN_TYPE='train' # train,inference
-DATE='8Jan'
-SIZE='576'
-CHECKPOINT="checkpoints-$MODEL-$MACHINE_TYPE-$EXP_NAME-$SIZE-$DATE"
-DATASET_SIZE='576a'
-NUM_GPUS=4
-
-rm -rf $CHECKPOINT
-mkdir $CHECKPOINT
-
-export NUM_NODES=1
-export EPOCHS=10
-export LOCAL_RANK=0
-export CUDA_VISIBLE_DEVICES=0,1,2,3 # Set your gpu ids 
-
-accelerate launch --multi_gpu --num_processes=$NUM_GPUS models-hf/$MODEL-vqa-train-$MACHINE_TYPE.py --num_epochs $EPOCHS --train_batch_size 8 --val_batch_size 8  --train_dir datasets/$DATASET_SIZE \
---val_dir datasets/$DATASET_SIZE  --checkpoint_dir  $CHECKPOINT  \
---question_dir datasets/questions/all/master_adv_ocr.json   --experiment_name ms-$MODEL-$EXP_NAME  \
---ngpus $NUM_GPUS --machine_type $MACHINE_TYPE --wandb_status online --image_size 576 --accumulation_steps 4 --wce 1 --ocr 1
-
-```
-
-##### Experiment 4 wce + desc 
-
-```
-MODEL='blip'  # git,blip
-MACHINE_TYPE='ddp' # ddp or dp or cpu
-EXP_NAME='desc' # 
-RUN_TYPE='train' # train,inference
-DATE='8Jan'
-SIZE='576'
-CHECKPOINT="checkpoints-$MODEL-$MACHINE_TYPE-$EXP_NAME-$SIZE-$DATE"
-DATASET_SIZE='576a'
-NUM_GPUS=4
-
-rm -rf $CHECKPOINT
-mkdir $CHECKPOINT
-
-export NUM_NODES=1
-export EPOCHS=10
-export LOCAL_RANK=0
-export CUDA_VISIBLE_DEVICES=0,1,2,3 # Set your gpu ids 
-
-accelerate launch --multi_gpu --num_processes=$NUM_GPUS models-hf/$MODEL-vqa-train-$MACHINE_TYPE.py --num_epochs $EPOCHS --train_batch_size 8 --val_batch_size 8  --train_dir datasets/$DATASET_SIZE \
---val_dir datasets/$DATASET_SIZE  --checkpoint_dir  $CHECKPOINT  \
---question_dir datasets/questions/all/master_adv_ocr.json   --experiment_name ms-$MODEL-$EXP_NAME  \
---ngpus $NUM_GPUS --machine_type $MACHINE_TYPE --wandb_status online --image_size 576 --accumulation_steps 4 --wce 1 --desc 1
-
-```
-
-##### Experiment 5. wce + bbox
-
-```
-MODEL='blip'  # git,blip
-MACHINE_TYPE='ddp' # ddp or dp or cpu
-EXP_NAME='bbox' # 
-RUN_TYPE='train' # train,inference
-DATE='8Jan'
-SIZE='576'
-CHECKPOINT="checkpoints-$MODEL-$MACHINE_TYPE-$EXP_NAME-$SIZE-$DATE"
-DATASET_SIZE='576a'
-NUM_GPUS=4
-
-rm -rf $CHECKPOINT
-mkdir $CHECKPOINT
-
-export NUM_NODES=1
-export EPOCHS=10
-export LOCAL_RANK=0
-export CUDA_VISIBLE_DEVICES=0,1,2,3 # Set your gpu ids 
-
-accelerate launch --multi_gpu --num_processes=$NUM_GPUS models-hf/$MODEL-vqa-train-$MACHINE_TYPE.py --num_epochs $EPOCHS --train_batch_size 8 --val_batch_size 8  --train_dir datasets/$DATASET_SIZE \
---val_dir datasets/$DATASET_SIZE  --checkpoint_dir  $CHECKPOINT  \
---question_dir datasets/questions/all/master_bbox.json   --experiment_name ms-$MODEL-$EXP_NAME  \
---ngpus $NUM_GPUS --machine_type $MACHINE_TYPE --wandb_status online --image_size 576 --accumulation_steps 4 --wce 1 --bbox 1
-
-```
-
-##### Exp 6. bbox-segment
-```
-MODEL='blip'  # git,blip
-MACHINE_TYPE='ddp' # ddp or dp or cpu
-EXP_NAME='bbox-segment' # 
-RUN_TYPE='train' # train,inference
-DATE='8Jan'
-SIZE='576'
-CHECKPOINT="checkpoints-$MODEL-$MACHINE_TYPE-$EXP_NAME-$SIZE-$DATE"
-DATASET_SIZE='576a'
-NUM_GPUS=4
-
-rm -rf $CHECKPOINT
-mkdir $CHECKPOINT
-
-export NUM_NODES=1
-export EPOCHS=10
-export LOCAL_RANK=0
-export CUDA_VISIBLE_DEVICES=0,1,2,3 # Set your gpu ids 
-
-accelerate launch --num_processes=$NUM_GPUS models-hf/blip-vqa-train-$MACHINE_TYPE.py --num_epochs $EPOCHS --train_batch_size 8 --val_batch_size 8 --train_dir datasets/$DATASET_SIZE \
-    --val_dir datasets/$DATASET_SIZE --checkpoint_dir  $CHECKPOINT  \
-    --question_dir datasets/questions/all/master_bbox_segment.json --experiment_name ms-$MODEL-$EXP_NAME-$DATE \
-    --ngpus $NUM_GPUS --machine_type $MACHINE_TYPE --wandb_status online --accumulation_steps 4 --image_size 576 --wce 1 --bbox_segment 1
-
-```
-
-## GIT (Distributed) - 576
-
-### Experiment 1 GIT LR 
-```
-
-MODEL='git'  # git,blip
-MACHINE_TYPE='ddp' # ddp or dp or cpu
-EXP_NAME='base-lr' # 
-RUN_TYPE='train' # train,inference
-DATE='16Jan'
-SIZE='576'
-CHECKPOINT="checkpoints-$MODEL-$MACHINE_TYPE-$EXP_NAME-$SIZE-$DATE"
-DATASET_SIZE='576a'
-NUM_GPUS=4
-
-rm -rf $CHECKPOINT
-mkdir $CHECKPOINT
-
-export NUM_NODES=1
-export EPOCHS=10
-export LOCAL_RANK=0
-export CUDA_VISIBLE_DEVICES=0,1,2,3  # Set your gpu ids
-
-accelerate launch --multi_gpu --num_processes=$NUM_GPUS models-hf/$MODEL-vqa-train-$MACHINE_TYPE.py --num_epochs $EPOCHS --train_batch_size 10 --val_batch_size 10  --train_dir datasets/$DATASET_SIZE \
---val_dir datasets/$DATASET_SIZE  --checkpoint_dir  $CHECKPOINT  --learning_rate 1e-5 \
---question_dir datasets/questions/all/master.json   --experiment_name ms-$MODEL-$EXP_NAME  \
---ngpus $NUM_GPUS --machine_type $MACHINE_TYPE --wandb_status online --image_size 576 --accumulation_steps 4 --wce 0 --lr 1
-```
-
-
-### Experiment 2 GIT WCE
-```
-
-MODEL='git'  # git,blip
-MACHINE_TYPE='ddp' # ddp or dp or cpu
-EXP_NAME='wce' # 
-RUN_TYPE='train' # train,inference
-DATE='18Jan'
-SIZE='576'
-CHECKPOINT="checkpoints-$MODEL-$MACHINE_TYPE-$EXP_NAME-$SIZE-$DATE"
-DATASET_SIZE='576a'
-NUM_GPUS=4
-
-rm -rf $CHECKPOINT
-mkdir $CHECKPOINT
-
-export NUM_NODES=1
-export EPOCHS=10
-export LOCAL_RANK=0
-export CUDA_VISIBLE_DEVICES=0,1,2,3  # Set your gpu ids
-
-accelerate launch --multi_gpu --num_processes=$NUM_GPUS models-hf/$MODEL-vqa-train-$MACHINE_TYPE.py --num_epochs $EPOCHS --train_batch_size 10 --val_batch_size 10  --train_dir datasets/$DATASET_SIZE \
---val_dir datasets/$DATASET_SIZE  --checkpoint_dir  $CHECKPOINT  --learning_rate 1e-5 \
---question_dir datasets/questions/all/master.json   --experiment_name ms-$MODEL-$EXP_NAME  \
---ngpus $NUM_GPUS --machine_type $MACHINE_TYPE --wandb_status online --image_size 576 --accumulation_steps 4 --wce 0 --lr 1
-```
-
-
-
-## GIT (Distributed) - 384
-
-#### Experiment 1 GIT Base 
-
-```
-MODEL='git'  # git,blip
-MACHINE_TYPE='ddp' # ddp or dp or cpu
-EXP_NAME='base' # 
-RUN_TYPE='train' # train,inference
-DATE='4Jan'
-CHECKPOINT="checkpoints-$MODEL-$MACHINE_TYPE-$EXP_NAME-$DATE"
-DATASET_SIZE='384a'
-NUM_GPUS=3
-
-rm -rf $CHECKPOINT
-mkdir $CHECKPOINT
-
-export NUM_NODES=1
-export EPOCHS=10
-export LOCAL_RANK=0
-export CUDA_VISIBLE_DEVICES=0,1,2 # Set your gpu ids 
-
-accelerate launch --multi_gpu --num_processes=$NUM_GPUS models-hf/$MODEL-vqa-train-$MACHINE_TYPE.py --num_epochs $EPOCHS --train_batch_size 4 --val_batch_size 4  --train_dir datasets/$DATASET_SIZE \
---val_dir datasets/$DATASET_SIZE  --checkpoint_dir  $CHECKPOINT  --learning_rate 1e-5 \
---question_dir datasets/questions/all/master.json   --experiment_name ms-$MODEL-$EXP_NAME  \
---ngpus $NUM_GPUS --machine_type $MACHINE_TYPE --wandb_status online --image_size 384 --accumulation_steps 4 --wce 0 --lr 0
-```
-
-#### Experiment 2 GIT Base + LR 
-
-```
-
-MODEL='git'  # git,blip
-MACHINE_TYPE='ddp' # ddp or dp or cpu
-EXP_NAME='base-lr' # 
-RUN_TYPE='train' # train,inference
-DATE='4Jan'
-CHECKPOINT="checkpoints-$MODEL-$MACHINE_TYPE-$EXP_NAME-$DATE"
-DATASET_SIZE='384a'
-NUM_GPUS=3
-
-rm -rf $CHECKPOINT
-mkdir $CHECKPOINT
-
-export NUM_NODES=1
-export EPOCHS=10
-export LOCAL_RANK=0
-export CUDA_VISIBLE_DEVICES=0,1,2  # Set your gpu ids
-
-accelerate launch --multi_gpu --num_processes=$NUM_GPUS models-hf/$MODEL-vqa-train-$MACHINE_TYPE.py --num_epochs $EPOCHS --train_batch_size 4 --val_batch_size 4  --train_dir datasets/$DATASET_SIZE \
---val_dir datasets/$DATASET_SIZE  --checkpoint_dir  $CHECKPOINT  --learning_rate 1e-5 \
---question_dir datasets/questions/all/master.json   --experiment_name ms-$MODEL-$EXP_NAME  \
---ngpus $NUM_GPUS --machine_type $MACHINE_TYPE --wandb_status online --image_size 384 --accumulation_steps 4 --wce 0 --lr 1
-```
-
-#### Experiment 3 GIT WCE
-```
-
-MODEL='git'  # git,blip
-MACHINE_TYPE='ddp' # ddp or dp or cpu
-EXP_NAME='wce' # 
-RUN_TYPE='train' # train,inference
-DATE='5Jan'
-CHECKPOINT="checkpoints-$MODEL-$MACHINE_TYPE-$EXP_NAME-$DATE"
-DATASET_SIZE='384a'
-NUM_GPUS=3
-
-export NUM_NODES=1
-export EPOCHS=10
-export LOCAL_RANK=0
-export CUDA_VISIBLE_DEVICES=0,1,2
-
-
-accelerate launch --multi_gpu --num_processes=$NUM_GPUS models-hf/$MODEL-vqa-train-$MACHINE_TYPE.py --num_epochs $EPOCHS --train_batch_size 4 --val_batch_size 4  --train_dir datasets/$DATASET_SIZE \
---val_dir datasets/$DATASET_SIZE  --checkpoint_dir  $CHECKPOINT  --learning_rate 1e-5 \
---question_dir datasets/questions/all/master.json   --experiment_name ms-$MODEL-$EXP_NAME  \
---ngpus $NUM_GPUS --machine_type $MACHINE_TYPE --wandb_status online --image_size 384 --accumulation_steps 4 --wce 1 --lr 0
-```
-
-#### Experiment 4 GIT LR + OCR Pre
-
-```
-
-MODEL='git'  # git,blip
-MACHINE_TYPE='ddp' # ddp or dp or cpu
-EXP_NAME='ocr' # 
-RUN_TYPE='train' # train,inference
-DATE='9Jan'
-SIZE='384'
-CHECKPOINT="checkpoints-$MODEL-$MACHINE_TYPE-$EXP_NAME-$SIZE-$DATE"
-DATASET_SIZE='384a'
-NUM_GPUS=4
-
-rm -rf $CHECKPOINT
-mkdir $CHECKPOINT
-
-export NUM_NODES=1
-export EPOCHS=10
-export LOCAL_RANK=0
-export CUDA_VISIBLE_DEVICES=0,1,2,3  # Set your gpu ids
-
-accelerate launch --multi_gpu --num_processes=$NUM_GPUS models-hf/$MODEL-vqa-train-$MACHINE_TYPE.py --num_epochs $EPOCHS --train_batch_size 10 --val_batch_size 10  --train_dir datasets/$DATASET_SIZE \
---val_dir datasets/$DATASET_SIZE  --checkpoint_dir  $CHECKPOINT  --learning_rate 1e-5 \
---question_dir datasets/questions/all/master_adv.json   --experiment_name ms-$MODEL-$EXP_NAME  \
---ngpus $NUM_GPUS --machine_type $MACHINE_TYPE --wandb_status online --image_size 384 --accumulation_steps 4 --lr 1 --ocr 1
-
-```
-
-
-<!-- #### Experiment 5 GIT Base + OCR Post
-
-```
-
-MODEL='git'  # git,blip
-MACHINE_TYPE='ddp' # ddp or dp or cpu
-EXP_NAME='ocr-post' # 
-RUN_TYPE='train' # train,inference
-DATE='5Jan'
-CHECKPOINT="checkpoints-$MODEL-$MACHINE_TYPE-$EXP_NAME-$DATE"
-DATASET_SIZE='384a'
-NUM_GPUS=3
-
-rm -rf $CHECKPOINT
-mkdir $CHECKPOINT
-
-export NUM_NODES=1
-export EPOCHS=10
-export LOCAL_RANK=0
-export CUDA_VISIBLE_DEVICES=0,1,2  # Set your gpu ids
-
-accelerate launch --multi_gpu --num_processes=$NUM_GPUS models-hf/$MODEL-vqa-train-$MACHINE_TYPE.py --num_epochs $EPOCHS --train_batch_size 4 --val_batch_size 4  --train_dir datasets/$DATASET_SIZE \
---val_dir datasets/$DATASET_SIZE  --checkpoint_dir  $CHECKPOINT  --learning_rate 1e-5 \
---question_dir datasets/questions/all/master_adv_ocr.json   --experiment_name ms-$MODEL-$EXP_NAME  \
---ngpus $NUM_GPUS --machine_type $MACHINE_TYPE --wandb_status online --image_size 384 --accumulation_steps 4 --ocr 1
-```
- -->
-
-#### Experiment 6 GIT LR + Desc
-
-```
-MODEL='git'  # git,blip
-MACHINE_TYPE='ddp' # ddp or dp or cpu
-EXP_NAME='desc' # 
-RUN_TYPE='train' # train,inference
-DATE='10Jan'
-SIZE='384'
-CHECKPOINT="checkpoints-$MODEL-$MACHINE_TYPE-$EXP_NAME-$SIZE-$DATE"
-DATASET_SIZE='384a'
-NUM_GPUS=4
-
-rm -rf $CHECKPOINT
-mkdir $CHECKPOINT
-
-export NUM_NODES=1
-export EPOCHS=10
-export LOCAL_RANK=0
-export CUDA_VISIBLE_DEVICES=0,1,2,3  # Set your gpu ids
-
-accelerate launch --multi_gpu --num_processes=$NUM_GPUS models-hf/$MODEL-vqa-train-$MACHINE_TYPE.py --num_epochs $EPOCHS --train_batch_size 10 --val_batch_size 10  --train_dir datasets/$DATASET_SIZE \
---val_dir datasets/$DATASET_SIZE  --checkpoint_dir  $CHECKPOINT  --learning_rate 1e-5 \
---question_dir datasets/questions/all/master_adv_ocr.json   --experiment_name ms-$MODEL-$EXP_NAME  \
---ngpus $NUM_GPUS --machine_type $MACHINE_TYPE --wandb_status online --image_size 384 --accumulation_steps 4 --lr 1 --desc 1
-
-```
-
-#### Experiment 7 GIT LR + BBox
-
-```
-
-MODEL='git'  # git,blip
-MACHINE_TYPE='ddp' # ddp or dp or cpu
-EXP_NAME='bbox' # 
-RUN_TYPE='train' # train,inference
-DATE='7Jan'
-SIZE='384'
-CHECKPOINT="checkpoints-$MODEL-$MACHINE_TYPE-$EXP_NAME-$SIZE-$DATE"
-DATASET_SIZE='384a'
-NUM_GPUS=4
-
-rm -rf $CHECKPOINT
-mkdir $CHECKPOINT
-
-export NUM_NODES=1
-export EPOCHS=10
-export LOCAL_RANK=0
-export CUDA_VISIBLE_DEVICES=0,1,2,3  # Set your gpu ids
-
-accelerate launch --multi_gpu --num_processes=$NUM_GPUS models-hf/$MODEL-vqa-train-$MACHINE_TYPE.py --num_epochs $EPOCHS --train_batch_size 10 --val_batch_size 10  --train_dir datasets/$DATASET_SIZE \
---val_dir datasets/$DATASET_SIZE  --checkpoint_dir  $CHECKPOINT  --learning_rate 1e-5 \
---question_dir datasets/questions/all/master_bbox.json   --experiment_name ms-$MODEL-$EXP_NAME  \
---ngpus $NUM_GPUS --machine_type $MACHINE_TYPE --wandb_status online --image_size 384 --accumulation_steps 4 --lr 1 --bbox 1
-
-```
-
-#### Experiment 8 GIT LR + BBox Segment
-
-```
-
-MODEL='git'  # git,blip
-MACHINE_TYPE='ddp' # ddp or dp or cpu
-EXP_NAME='bbox-segment' # 
-RUN_TYPE='train' # train,inference
-DATE='7Jan'
-SIZE='384'
-CHECKPOINT="checkpoints-$MODEL-$MACHINE_TYPE-$EXP_NAME-$SIZE-$DATE"
-DATASET_SIZE='384a'
-NUM_GPUS=4
-
-rm -rf $CHECKPOINT
-mkdir $CHECKPOINT
-
-export NUM_NODES=1
-export EPOCHS=10
-export LOCAL_RANK=0
-export CUDA_VISIBLE_DEVICES=0,1,2,3  # Set your gpu ids
-
-accelerate launch --multi_gpu --num_processes=$NUM_GPUS models-hf/$MODEL-vqa-train-$MACHINE_TYPE.py --num_epochs $EPOCHS --train_batch_size 10 --val_batch_size 10  --train_dir datasets/$DATASET_SIZE \
---val_dir datasets/$DATASET_SIZE  --checkpoint_dir  $CHECKPOINT  --learning_rate 1e-5 \
---question_dir datasets/questions/all/master_bbox_segment.json   --experiment_name ms-$MODEL-$EXP_NAME  \
---ngpus $NUM_GPUS --machine_type $MACHINE_TYPE --wandb_status online --image_size 384 --accumulation_steps 4 --lr 1 --bbox_segment 1
-```
-
-
-# PIX (Distributed) - 384
+#### PIX (Distributed) - 384
 
 #### Experiment 1 PIX LR 
 ```
@@ -581,7 +143,7 @@ export CUDA_VISIBLE_DEVICES=0,1,2,3  # Set your gpu ids
 accelerate launch --multi_gpu --num_processes=$NUM_GPUS models-hf/$MODEL-vqa-train-$MACHINE_TYPE.py --num_epochs $EPOCHS --train_batch_size 16 --val_batch_size 16 --train_dir datasets/$DATASET_SIZE \
     --val_dir datasets/$DATASET_SIZE  --checkpoint_dir  $CHECKPOINT  \
     --question_dir datasets/questions/all/master.json  --experiment_name ms-$MODEL-$EXP_NAME \
-    --ngpus 4 --machine_type $MACHINE_TYPE --wandb_status online --max_patches 512 --accumulation_steps 4 --lr 1
+    --ngpus 4 --machine_type $MACHINE_TYPE --wandb_status online --max_patches 512 --accumulation_steps 4 --lr 1 --wce 0 
 ```
 
 #### Experiment 2 PIX WCE 
@@ -750,9 +312,9 @@ accelerate launch --multi_gpu --num_processes=$NUM_GPUS models-hf/$MODEL-vqa-tra
 
 ```
 
+### Instruction Fine Tuned models
 
-## GPT4 Experiments
-
+#### 1. GPT4 Experiments
 
 #### Step 1 Input data prep for the model
 
@@ -805,7 +367,7 @@ python src/evaluate/02-a-hallucination.py
 ```
 
 
-## LLaVA
+### LLaVA
 
 #### Step 0 (If you don't have LLaVA)
 git clone https://github.com/haotian-liu/LLaVA.git
