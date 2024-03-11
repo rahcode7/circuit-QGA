@@ -367,7 +367,7 @@ python src/evaluate/02-a-hallucination.py
 ```
 
 
-#### 2. LLaVA Fine tuning
+<!-- #### 2. LLaVA Fine tuning
 
 #### Step 0 (If you don't have LLaVA)
 git clone https://github.com/haotian-liu/LLaVA.git
@@ -376,7 +376,7 @@ cd LLaVA
 conda create -n llava python=3.10 -y
 conda activate llava
 pip install --upgrade pip  # enable PEP 660 support
-pip install -e .
+pip install -e . -->
 
 
 
