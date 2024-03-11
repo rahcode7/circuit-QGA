@@ -232,7 +232,6 @@ def run_ddp_accelerate(args):
     vqa_processor = Pix2StructImageProcessor(is_vqa=True,max_patches=MAX_PATCHES) #,patch_size={'height':32,'width':32})
     #text_processor.resize_token    
 
-    # export SITE_PACKAGES_PATH='/scratch/AzureNfsServer_INPUT1/vc_data/users/gmanish/condaEnv/circuitvqa/lib/python3.9/site-packages'
     SITE_PACKAGES_PATH = site.getsitepackages()[0]
     src = 'models-hf/pix-files/image_processing_pix2struct.py'
     dest = os.path.join(SITE_PACKAGES_PATH,'transformers/models/pix2struct','image_processing_pix2struct.py')
