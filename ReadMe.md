@@ -380,7 +380,7 @@ pip install -e .
 
 
 
-#### Step 1 (fine tuning codes and model weights)
+<!-- #### Step 1 (fine tuning codes and model weights)
 ```
 pip install deepspeed
 pip install flash-attn==2.3.3
@@ -397,7 +397,7 @@ cp LLaVA/scripts/zero2.json finetune_LLaVA/scripts/zero2.json
 
 ```
 
- -->
+
 #### Step 2 : Get instruction train/val datasets
 
 
@@ -456,7 +456,7 @@ deepspeed LLaVA/llava/train/train_mem.py \
         --dataloader_num_workers 4 \
         --lazy_preprocess True \
         --report_to wandb  
-```
+``` -->
 
 
 #### InstructBLIP - ZERO SHOT
